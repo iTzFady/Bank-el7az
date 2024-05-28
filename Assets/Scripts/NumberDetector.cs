@@ -14,7 +14,7 @@ public class NumberDetector : MonoBehaviour
         if (rollingDice != null) {
             if (rollingDice.GetComponent<Rigidbody>().velocity == Vector3.zero) { 
                 rollingDice.num = int.Parse(other.name);
-                Debug.Log(rollingDice.num);
+                //Debug.Log(rollingDice.num);
             }
         }
     }

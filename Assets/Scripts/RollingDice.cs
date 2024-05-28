@@ -25,7 +25,7 @@ public class RollingDice : MonoBehaviour
         }
     }
 
-    private void RollDice()
+    public void RollDice()
     {
         diceBody.isKinematic = false;
         forceX = Random.Range(0 , maxRandomForceValue);
