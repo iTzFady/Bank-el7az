@@ -6,9 +6,8 @@ public class PlayerMovement : MonoBehaviour
     //RollingDice rollingDice;
     public TilesMovement currentTile;
     int playerPostion;
-    public int steps;
+    public int steps = 0;
     public bool isMoving;
-    GameManager gameManager;
 
     /*private void Awake()
     {
@@ -36,7 +35,8 @@ public class PlayerMovement : MonoBehaviour
             if (steps > 0) {
                 playerPostion++;
                 steps--;
-            } else {
+            } 
+            if (steps < 0) {
                 playerPostion--;
                 steps++;
             }
@@ -48,12 +48,8 @@ public class PlayerMovement : MonoBehaviour
             yield return new WaitForSeconds(.1f);
         }
         isMoving = false;
-        gameManager.EndPlayerTurn();
     }
     bool MoveToNextTiles(Vector3 targetPos) {
         return targetPos != (transform.position = Vector3.MoveTowards(transform.position, targetPos, 5f * Time.deltaTime));
     }
-    /*public void ChangeSteps(int newValue) {
-        steps = newValue;
-    }*/
 }

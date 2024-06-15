@@ -1,22 +1,33 @@
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
     RollingDice dice;
     PlayerMovement playerMovement;
     CameraController cameraController;
+    PlayerMovement[] objects;
     public List<PlayerMovement> players;
-    private int currentPlayerindex = 0;
+    public int currentPlayerindex = 0;
     private void Awake()
     {
         dice = FindObjectOfType<RollingDice>();
         playerMovement = FindObjectOfType<PlayerMovement>();
         cameraController = FindObjectOfType<CameraController>();
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else { 
+            Destroy(gameObject);
+        }
     }
     private void Start()
     {
-        //cameraController.FollowDice();
+        cameraController.FollowDice();
+        AddPlayers();
         StartPlayerTurn();
     }
     // Update is called once per frame
@@ -28,30 +39,41 @@ public class GameManager : MonoBehaviour
             {
                 cameraController.FollowDice();
                 dice.RollDice();
-                //test.ChangeTarget(nextTarget);
             }
         }
         if (!playerMovement.isMoving && dice.num > 0)
         {
-            cameraController.FollowPlayer();
-            playerMovement.steps = dice.num;
+            cameraController.FollowPlayer(players[currentPlayerindex].transform);
+            players[currentPlayerindex].steps = dice.num;
             dice.ResetNum();
-            playerMovement.StartMoving();
+            players[currentPlayerindex].StartMoving();
+            EndPlayerTurn();
         }
-        if (!playerMovement.isMoving&&playerMovement.steps < 0) {
+        Debug.LogError(players[currentPlayerindex].name + players[currentPlayerindex].steps);
+        /*if (!playerMovement.isMoving&&playerMovement.steps < 0) {
             cameraController.FollowPlayer();
-            playerMovement.StartMoving();
-        }
+            players[currentPlayerindex].StartMoving();
+        }*/
 
     }
 
+    void AddPlayers() {
+        players.Clear();
+        objects = FindObjectsOfType<PlayerMovement>();
+        foreach (PlayerMovement obj in objects)
+        {
+            if (obj.tag == "Player") {
+                players.Add(obj);
+            }
+        }
+    }
     void StartPlayerTurn() {
         players[currentPlayerindex].StartMoving();
     }
     public void EndPlayerTurn() {
         currentPlayerindex = (currentPlayerindex + 1) % players.Count;
-        Debug.LogError(currentPlayerindex);
         StartPlayerTurn();
     }
+    
 }
 

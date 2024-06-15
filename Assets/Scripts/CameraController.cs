@@ -17,8 +17,8 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
-        currentTarget = player;
-        currentOffset = playerOffset;
+        currentTarget = dice;
+        currentOffset = diceOffset;
         initialYPosition = transform.position.y;
     }
 
@@ -49,11 +49,11 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    public void FollowPlayer()
+    public void FollowPlayer(Transform targetPlayer)
     {
         if (!transitioning)
         {
-            StartCoroutine(SmoothTransition(player, playerOffset));
+            StartCoroutine(SmoothTransition(targetPlayer, playerOffset));
         }
     }
 
