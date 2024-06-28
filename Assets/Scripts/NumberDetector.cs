@@ -17,7 +17,6 @@ public class NumberDetector : MonoBehaviour
                     rollingDice.num = int.Parse(other.name);
                 }
                 rollingDice.isRolling = false;
-                //Debug.Log(rollingDice.num);
             }
         }
     }

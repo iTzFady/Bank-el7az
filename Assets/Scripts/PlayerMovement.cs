@@ -1,26 +1,14 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    //RollingDice rollingDice;
     public TilesMovement currentTile;
     int playerPostion;
     public int steps = 0;
     public bool isMoving;
 
-    /*private void Awake()
-    {
-        rollingDice = FindObjectOfType<RollingDice>();
-    }*/
-    void Update() {
-        /*if(!isMoving && rollingDice.num != 0) {
-            steps = rollingDice.num;
-            rollingDice.ResetNum();
-            StartCoroutine(Move());
-        }
-        //Debug.Log(steps);*/
-    }
     public void StartMoving() {
         StartCoroutine(Move());
     }
@@ -45,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
             playerPostion = (playerPostion + currentTile.tilesList.Count) % currentTile.tilesList.Count;
             Vector3 nextPos = currentTile.tilesList[playerPostion].position;
             while (MoveToNextTiles(nextPos)) { yield return null; }
+            // Adjust players' positions on the same tile
             yield return new WaitForSeconds(.1f);
         }
         isMoving = false;

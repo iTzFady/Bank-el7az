@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour
     PlayerMovement[] objects;
     public List<PlayerMovement> players;
     public int currentPlayerindex = 0;
+    private float time;
+    private int frameCount;
+    private float pollingTime = 1f;
     private void Awake()
     {
         dice = FindObjectOfType<RollingDice>();
@@ -49,11 +52,11 @@ public class GameManager : MonoBehaviour
             players[currentPlayerindex].StartMoving();
             EndPlayerTurn();
         }
-        Debug.LogError(players[currentPlayerindex].name + players[currentPlayerindex].steps);
         /*if (!playerMovement.isMoving&&playerMovement.steps < 0) {
             cameraController.FollowPlayer();
             players[currentPlayerindex].StartMoving();
         }*/
+        //FramePerSecond();
 
     }
 
@@ -73,6 +76,17 @@ public class GameManager : MonoBehaviour
     public void EndPlayerTurn() {
         currentPlayerindex = (currentPlayerindex + 1) % players.Count;
         StartPlayerTurn();
+    }
+    public void FramePerSecond() {
+        time += Time.deltaTime;
+        frameCount++;
+        if (time >= pollingTime) {
+            int frameRate = Mathf.RoundToInt(frameCount / time);
+            Debug.Log(frameRate);
+            time -= pollingTime;
+            frameCount = 0;
+        }
+
     }
     
 }
