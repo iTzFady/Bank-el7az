@@ -12,18 +12,6 @@ public class RollingDice : MonoBehaviour
     {
         Initialize();
     }
-    // Update is called once per frame
-    void Update()
-    {
-        /*if (diceBody != null)
-        {
-            if (Input.GetMouseButtonDown(0) && !isRolling && !playerMovement.isMoving) {
-                RollDice();
-            }
-        }
-        Debug.LogError(num);*/
-    }
-
     public void RollDice()
     {
         isRolling = true;
@@ -39,8 +27,16 @@ public class RollingDice : MonoBehaviour
         diceBody.isKinematic = true;
         transform.rotation = new Quaternion(Random.Range(0 , 360) , Random.Range(0, 360) , Random.Range(0 , 360), 0);
     }
-    public void ResetNum()
+    private void ResetPosition() {
+        diceBody.isKinematic = true;
+        isRolling = false;
+        transform.rotation = new Quaternion(Random.Range(0, 360), Random.Range(0, 360), Random.Range(0, 360), 0);
+        transform.position = new Vector3(10.24f, 5.3f, 11.03f);
+    }
+    public void ResetDice()
     {
         num = 0;
+        Invoke("ResetPosition" , 1f);
+
     }
 }

@@ -8,12 +8,13 @@ public class PlayerMovement : MonoBehaviour
     int playerPostion;
     public int steps = 0;
     public bool isMoving;
-
+    public int playerScore;
     public void StartMoving() {
         StartCoroutine(Move());
     }
 
     IEnumerator Move() {
+        GameManager.instance.isSomeonePlaying = true;
         if (isMoving) { 
             yield break;
         }
@@ -33,12 +34,13 @@ public class PlayerMovement : MonoBehaviour
             playerPostion = (playerPostion + currentTile.tilesList.Count) % currentTile.tilesList.Count;
             Vector3 nextPos = currentTile.tilesList[playerPostion].position;
             while (MoveToNextTiles(nextPos)) { yield return null; }
-            // Adjust players' positions on the same tile
             yield return new WaitForSeconds(.1f);
         }
         isMoving = false;
+        GameManager.instance.isSomeonePlaying = false;
     }
     bool MoveToNextTiles(Vector3 targetPos) {
         return targetPos != (transform.position = Vector3.MoveTowards(transform.position, targetPos, 5f * Time.deltaTime));
     }
+
 }

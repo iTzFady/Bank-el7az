@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class GameManager : MonoBehaviour
     PlayerMovement[] objects;
     public List<PlayerMovement> players;
     public int currentPlayerindex = 0;
+    public bool isSomeonePlaying;
     private float time;
     private int frameCount;
     private float pollingTime = 1f;
@@ -38,24 +40,25 @@ public class GameManager : MonoBehaviour
     {
         if (dice != null)
         {
-            if (Input.GetMouseButtonDown(0) && !dice.isRolling && !playerMovement.isMoving)
+            if (Input.GetMouseButtonDown(0) && !dice.isRolling && !GameManager.instance.isSomeonePlaying)
             {
                 cameraController.FollowDice();
                 dice.RollDice();
             }
         }
-        if (!playerMovement.isMoving && dice.num > 0)
+        if (!GameManager.instance.isSomeonePlaying && dice.num > 0)
         {
             cameraController.FollowPlayer(players[currentPlayerindex].transform);
             players[currentPlayerindex].steps = dice.num;
-            dice.ResetNum();
+            dice.ResetDice();
             players[currentPlayerindex].StartMoving();
-            EndPlayerTurn();
+            StartCoroutine(EndPlayerTurn());
+            //EndPlayerTurn();
         }
-        /*if (!playerMovement.isMoving&&playerMovement.steps < 0) {
-            cameraController.FollowPlayer();
+        if (!GameManager.instance.isSomeonePlaying && playerMovement.steps < 0) {
+            cameraController.FollowPlayer(players[currentPlayerindex].transform);
             players[currentPlayerindex].StartMoving();
-        }*/
+        }
         //FramePerSecond();
 
     }
@@ -73,7 +76,8 @@ public class GameManager : MonoBehaviour
     void StartPlayerTurn() {
         players[currentPlayerindex].StartMoving();
     }
-    public void EndPlayerTurn() {
+    IEnumerator EndPlayerTurn() {
+        yield return new WaitUntil(() => !players[currentPlayerindex].isMoving);
         currentPlayerindex = (currentPlayerindex + 1) % players.Count;
         StartPlayerTurn();
     }

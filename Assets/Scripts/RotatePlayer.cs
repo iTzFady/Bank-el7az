@@ -30,7 +30,7 @@ public class RotatePlayer : MonoBehaviour
 
     private void Update()
     {
-        if (isRotating && rotatingObject != null)
+        if (isRotating && rotatingObject != null && rotatingObject.GetComponent<PlayerMovement>().isMoving)
         {
             // Increment the rotation time
             rotationTime += Time.deltaTime;
