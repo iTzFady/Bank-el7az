@@ -5,8 +5,10 @@ public class CameraController : MonoBehaviour
 {
     public Transform player;            // The player to follow
     public Transform dice;              // The dice to follow when rolling
-    public Vector3 playerOffset;        // Offset from the player
-    public Vector3 diceOffset;          // Offset from the dice
+    public Transform card;              // Card should be on camera
+    public Vector3 cardOffset;          // Offset for the card
+    public Vector3 playerOffset;        // Offset for the player
+    public Vector3 diceOffset;          // Offset for the dice
     public float smoothSpeed = 0.125f;  // Smooth speed of the camera
     public float transitionTime = 1.0f; // Time to transition between targets
 
@@ -46,6 +48,14 @@ public class CameraController : MonoBehaviour
         if (!transitioning)
         {
             StartCoroutine(SmoothTransition(dice, diceOffset));
+        }
+    }
+
+    public void ShowCard()
+    {
+        if (!transitioning)
+        {
+            StartCoroutine(SmoothTransition(card, cardOffset));
         }
     }
 

@@ -1,8 +1,10 @@
 using UnityEngine;
 using TMPro;
+using System.Linq;
 
 public class QuestionManager : MonoBehaviour
 {
+    public static QuestionManager instance;
     public TextMeshPro questionText;
     public TextMeshPro[] choiceTexts;
     public Question[] questions;
@@ -10,9 +12,50 @@ public class QuestionManager : MonoBehaviour
 
     private int currentQuestionIndex = 0;
 
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     void Start()
     {
+        foreach (var choice in choiceTexts)
+        {
+            var collider = choice.gameObject.AddComponent<BoxCollider>();
+            var textRenderer = choice.GetComponent<Renderer>();
+            collider.size = textRenderer.bounds.size;
+        }
+        currentQuestionIndex = Random.Range(0, questions.Count());
+        Debug.Log(currentQuestionIndex);
         DisplayQuestion(currentQuestionIndex);
+    }
+    private void Update()
+    {
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began)
+            {
+                Ray ray = Camera.main.ScreenPointToRay(touch.position);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    for (int i = 0; i < choiceTexts.Length; i++)
+                    {
+                        if (hit.collider.gameObject == choiceTexts[i].gameObject)
+                        {
+                            CheckAnswer(i);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     void DisplayQuestion(int index)
@@ -25,8 +68,6 @@ public class QuestionManager : MonoBehaviour
             choiceTexts[i].text = question.choices[i];
         }
 
-        // Trigger the animation to show the card
-        cardAnimator.SetTrigger("Show");
     }
 
     public void CheckAnswer(int choiceIndex)
@@ -40,4 +81,5 @@ public class QuestionManager : MonoBehaviour
             Debug.Log("Wrong!");
         }
     }
+
 }

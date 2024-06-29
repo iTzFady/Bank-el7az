@@ -1,25 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     RollingDice dice;
-    PlayerMovement playerMovement;
     CameraController cameraController;
     PlayerMovement[] objects;
     public List<PlayerMovement> players;
     public int currentPlayerindex = 0;
     public bool isSomeonePlaying;
+    public bool playerBeingQuestioned;
     private float time;
     private int frameCount;
     private float pollingTime = 1f;
     private void Awake()
     {
         dice = FindObjectOfType<RollingDice>();
-        playerMovement = FindObjectOfType<PlayerMovement>();
         cameraController = FindObjectOfType<CameraController>();
         if (instance == null)
         {
@@ -40,7 +38,7 @@ public class GameManager : MonoBehaviour
     {
         if (dice != null)
         {
-            if (Input.GetMouseButtonDown(0) && !dice.isRolling && !GameManager.instance.isSomeonePlaying)
+            if (Input.GetMouseButtonDown(0) && !dice.isRolling && !GameManager.instance.isSomeonePlaying && !GameManager.instance.playerBeingQuestioned)
             {
                 cameraController.FollowDice();
                 dice.RollDice();
@@ -53,9 +51,8 @@ public class GameManager : MonoBehaviour
             dice.ResetDice();
             players[currentPlayerindex].StartMoving();
             StartCoroutine(EndPlayerTurn());
-            //EndPlayerTurn();
         }
-        if (!GameManager.instance.isSomeonePlaying && playerMovement.steps < 0) {
+        if (!GameManager.instance.isSomeonePlaying && players[currentPlayerindex].steps < 0) {
             cameraController.FollowPlayer(players[currentPlayerindex].transform);
             players[currentPlayerindex].StartMoving();
         }
