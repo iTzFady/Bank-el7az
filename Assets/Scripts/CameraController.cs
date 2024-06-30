@@ -57,6 +57,7 @@ public class CameraController : MonoBehaviour
         {
             StartCoroutine(SmoothTransition(card, cardOffset));
         }
+        transform.LookAt(card);
     }
 
     public void FollowPlayer(Transform targetPlayer)

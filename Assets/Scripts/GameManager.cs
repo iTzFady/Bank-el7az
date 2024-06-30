@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,12 +11,14 @@ public class GameManager : MonoBehaviour
     CameraController cameraController;
     PlayerMovement[] objects;
     public List<PlayerMovement> players;
+    private Dictionary<PlayerMovement, HashSet<GameObject>> visitedTiles;
     public int currentPlayerindex = 0;
     public bool isSomeonePlaying;
     public bool playerBeingQuestioned;
     private float time;
     private int frameCount;
     private float pollingTime = 1f;
+    [SerializeField] Text fps;
     private void Awake()
     {
         dice = FindObjectOfType<RollingDice>();
@@ -22,6 +26,7 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            //InitializeVisitedTiles();
         }
         else { 
             Destroy(gameObject);
@@ -56,9 +61,20 @@ public class GameManager : MonoBehaviour
             cameraController.FollowPlayer(players[currentPlayerindex].transform);
             players[currentPlayerindex].StartMoving();
         }
-        //FramePerSecond();
+        FramePerSecond();
 
     }
+    /*private void InitializeVisitedTiles()
+    {
+        visitedTiles = new Dictionary<PlayerMovement, HashSet<GameObject>>();
+        foreach (var player in players)
+        {
+            if (!visitedTiles.ContainsKey(player))
+            {
+                visitedTiles[player] = new HashSet<GameObject>();
+            }
+        }
+    }*/
 
     void AddPlayers() {
         players.Clear();
@@ -78,17 +94,27 @@ public class GameManager : MonoBehaviour
         currentPlayerindex = (currentPlayerindex + 1) % players.Count;
         StartPlayerTurn();
     }
+    public bool HasVisitedTile(PlayerMovement player, GameObject tile)
+    {
+        return false;
+    }
+    public void MarkTileAsVisited(PlayerMovement player, GameObject tile)
+    {
+        
+    }
     public void FramePerSecond() {
         time += Time.deltaTime;
         frameCount++;
         if (time >= pollingTime) {
             int frameRate = Mathf.RoundToInt(frameCount / time);
             Debug.Log(frameRate);
+            fps.text = frameRate.ToString();
             time -= pollingTime;
             frameCount = 0;
         }
 
     }
+
     
 }
 

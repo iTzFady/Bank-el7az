@@ -9,11 +9,13 @@ public class QuestionManager : MonoBehaviour
     public TextMeshPro[] choiceTexts;
     public Question[] questions;
     public Animator cardAnimator;
+    private LayerMask layerMask;
 
     private int currentQuestionIndex = 0;
 
     private void Awake()
     {
+        layerMask = LayerMask.GetMask("Card");
         if (instance == null)
         {
             instance = this;
@@ -37,14 +39,14 @@ public class QuestionManager : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.touchCount > 0)
+        if (Input.touchCount > 0 && GameManager.instance.playerBeingQuestioned)
         {
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began)
             {
                 Ray ray = Camera.main.ScreenPointToRay(touch.position);
                 RaycastHit hit;
-                if (Physics.Raycast(ray, out hit))
+                if (Physics.Raycast(ray, out hit , layerMask))
                 {
                     for (int i = 0; i < choiceTexts.Length; i++)
                     {
@@ -75,6 +77,7 @@ public class QuestionManager : MonoBehaviour
         if (choiceIndex == questions[currentQuestionIndex].correctChoiceIndex)
         {
             Debug.Log("Correct!");
+            cardAnimator.SetTrigger("Hide");
         }
         else
         {

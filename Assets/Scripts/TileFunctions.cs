@@ -25,8 +25,7 @@ public class TileFunctions : MonoBehaviour
     {
         GameManager.instance.playerBeingQuestioned = true;
         cameraController.ShowCard();
-        Invoke("CardAnimation" , 3f);
-        //QuestionManager.instance.CardAnimation();
+        Invoke("CardAnimation" , 1f);
         
     }
     public void SkipTurn()
@@ -59,7 +58,8 @@ public class TileFunctions : MonoBehaviour
     }
     private void OnTriggerStay(Collider other)
     {
-        if (!GameManager.instance.players[GameManager.instance.currentPlayerindex].isMoving)
+        PlayerMovement currentPlayer = GameManager.instance.players[GameManager.instance.currentPlayerindex];
+        if (!GameManager.instance.players[GameManager.instance.currentPlayerindex].isMoving && !GameManager.instance.HasVisitedTile(currentPlayer, gameObject))
         {
             switch (TilesStations)
             {
@@ -82,6 +82,7 @@ public class TileFunctions : MonoBehaviour
                 default:
                     break;
             }
+            //GameManager.instance.MarkTileAsVisited(currentPlayer, gameObject);
         }
     }
 }
