@@ -4,7 +4,7 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
     private List<Transform> playersOnTile = new List<Transform>();
-    private float gridSize = 1.0f;
+    private float gridSize = 3.0f;
 
     private void OnTriggerEnter(Collider other)
     {

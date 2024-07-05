@@ -9,10 +9,10 @@ public class PlayerMovement : MonoBehaviour
     public int steps = 0;
     public bool isMoving;
     public int playerScore;
+    public HashSet<int> activatedTiles = new HashSet<int>(); 
     public void StartMoving() {
         StartCoroutine(Move());
     }
-
     IEnumerator Move() {
         GameManager.instance.isSomeonePlaying = true;
         if (isMoving) { 
@@ -42,19 +42,4 @@ public class PlayerMovement : MonoBehaviour
     bool MoveToNextTiles(Vector3 targetPos) {
         return targetPos != (transform.position = Vector3.MoveTowards(transform.position, targetPos, 5f * Time.deltaTime));
     }
-    public override bool Equals(object obj)
-    {
-        if (obj is PlayerMovement)
-        {
-            PlayerMovement other = (PlayerMovement)obj;
-            return this.GetInstanceID() == other.GetInstanceID();
-        }
-        return false;
-    }
-
-    public override int GetHashCode()
-    {
-        return this.GetInstanceID();
-    }
-
 }

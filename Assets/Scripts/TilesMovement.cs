@@ -10,18 +10,6 @@ public class TilesMovement : MonoBehaviour
     {
         FillList();
     }
-    /*private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        FillNodes();
-        for (int i = 0; i < tilesList.Count; i++) { 
-            Vector3 currentPos = tilesList[i].position;
-            if (i > 0) {
-                Vector3 prevPos = tilesList[i - 1].position;
-                Gizmos.DrawLine(prevPos , currentPos);
-            }
-        }
-    }*/
     void FillList() { 
         tilesList.Clear();
         tiles = GetComponentsInChildren<Transform>();

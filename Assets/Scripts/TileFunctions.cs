@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TileFunctions : MonoBehaviour
@@ -10,11 +8,14 @@ public class TileFunctions : MonoBehaviour
         SKIPTURN,
         SCORECHANGE,
         POSITIONCHANGE,
-        NOTHING
+        NOTHING,
+        Start
     }
+
     [SerializeField] tileStations TilesStations = tileStations.NOTHING;
     CameraController cameraController;
     QuestionManager questionManager;
+
 
     private void Awake()
     {
@@ -25,9 +26,9 @@ public class TileFunctions : MonoBehaviour
     {
         GameManager.instance.playerBeingQuestioned = true;
         cameraController.ShowCard();
-        Invoke("CardAnimation" , 1f);
-        
+        Invoke("CardAnimation", 1f);
     }
+
     public void SkipTurn()
     {
         GameManager.instance.currentPlayerindex++; // Move to the next player
@@ -38,9 +39,7 @@ public class TileFunctions : MonoBehaviour
         }
 
         // Additional logic for skipping multiple turns, if needed
-
         Debug.Log("Player " + GameManager.instance.currentPlayerindex + " turn skipped.");
-
     }
 
     public int scoreChange(int score)
@@ -52,37 +51,52 @@ public class TileFunctions : MonoBehaviour
     {
         return GameManager.instance.players[GameManager.instance.currentPlayerindex].steps += position;
     }
+
     public void CardAnimation()
     {
         questionManager.cardAnimator.SetTrigger("Show");
     }
+
     private void OnTriggerStay(Collider other)
     {
-        PlayerMovement currentPlayer = GameManager.instance.players[GameManager.instance.currentPlayerindex];
-        if (!GameManager.instance.players[GameManager.instance.currentPlayerindex].isMoving && !GameManager.instance.HasVisitedTile(currentPlayer, gameObject))
+        int currentPlayerIndex = GameManager.instance.currentPlayerindex;
+        PlayerMovement player = other.GetComponent<PlayerMovement>();
+       
+        if (!player.isMoving)
         {
-            switch (TilesStations)
+            if (TilesStations != tileStations.Start)
             {
-                case tileStations.QUESTIONS:
-                    question(); 
-                    Debug.LogError("question" + other.gameObject.name);
-                    break;
-                case tileStations.SKIPTURN:
-                    SkipTurn(); 
-                    Debug.LogError("skip turn" + other.gameObject.name); 
-                    break;
-                case tileStations.SCORECHANGE:
-                    scoreChange(GameManager.instance.players[GameManager.instance.currentPlayerindex].playerScore); 
-                    Debug.LogError("score change" + other.gameObject.name); 
-                    break;
-                case tileStations.POSITIONCHANGE:
-                    positionChange(GameManager.instance.players[GameManager.instance.currentPlayerindex].steps); 
-                    Debug.LogError("position change" + other.gameObject.name); 
-                    break;
-                default:
-                    break;
+                if (!player.activatedTiles.Contains(int.Parse(gameObject.name)))
+                {
+                    player.activatedTiles.Add(int.Parse(gameObject.name));
+                    switch (TilesStations)
+                    {
+                        case tileStations.QUESTIONS:
+                            question();
+                            Debug.LogError("question" + other.gameObject.name);
+                            break;
+                        case tileStations.SKIPTURN:
+                            SkipTurn();
+                            Debug.LogError("skip turn" + other.gameObject.name);
+                            break;
+                        case tileStations.SCORECHANGE:
+                            scoreChange(GameManager.instance.players[currentPlayerIndex].playerScore);
+                            Debug.LogError("score change" + other.gameObject.name);
+                            break;
+                        case tileStations.POSITIONCHANGE:
+                            positionChange(GameManager.instance.players[currentPlayerIndex].steps);
+                            Debug.LogError("position change" + other.gameObject.name);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    Debug.Log("This player has entered this tile before");
+
+                }
             }
-            //GameManager.instance.MarkTileAsVisited(currentPlayer, gameObject);
         }
     }
 }

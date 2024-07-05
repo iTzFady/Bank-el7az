@@ -5,17 +5,18 @@ using System.Linq;
 public class QuestionManager : MonoBehaviour
 {
     public static QuestionManager instance;
+    private CameraController cameraController;
     public TextMeshPro questionText;
     public TextMeshPro[] choiceTexts;
     public Question[] questions;
     public Animator cardAnimator;
     private LayerMask layerMask;
-
     private int currentQuestionIndex = 0;
 
     private void Awake()
     {
         layerMask = LayerMask.GetMask("Card");
+        cameraController = FindObjectOfType<CameraController>();
         if (instance == null)
         {
             instance = this;
@@ -77,12 +78,19 @@ public class QuestionManager : MonoBehaviour
         if (choiceIndex == questions[currentQuestionIndex].correctChoiceIndex)
         {
             Debug.Log("Correct!");
-            cardAnimator.SetTrigger("Hide");
+            cameraController.FollowDice();
+            Invoke("Delay" , 1f);
         }
         else
         {
             Debug.Log("Wrong!");
+            cameraController.FollowDice();
+            Invoke("Delay", 1f);
         }
+        cardAnimator.SetTrigger("Hide");
     }
 
+    void Delay() {
+        GameManager.instance.playerBeingQuestioned = false;
+    }
 }
