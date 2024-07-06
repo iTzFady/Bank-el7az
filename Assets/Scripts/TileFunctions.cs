@@ -73,7 +73,7 @@ public class TileFunctions : MonoBehaviour
                     {
                         case tileStations.QUESTIONS:
                             question();
-                            Debug.LogError("question" + other.gameObject.name);
+                            //Debug.LogError("question" + other.gameObject.name);
                             break;
                         case tileStations.SKIPTURN:
                             SkipTurn();
@@ -93,7 +93,7 @@ public class TileFunctions : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("This player has entered this tile before");
+                    //Debug.Log("This player has entered this tile before");
 
                 }
             }

@@ -4,16 +4,30 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public TilesMovement currentTile;
-    int playerPostion;
+    [SerializeField]
+    private TilesMovement currentTile;
+    private int playerPostion;
     public int steps = 0;
     public bool isMoving;
     public int playerScore;
-    public HashSet<int> activatedTiles = new HashSet<int>(); 
+    private BoxCollider boxCollider;
+    public HashSet<int> activatedTiles = new HashSet<int>();
+
+    private void Awake()
+    {
+        boxCollider = GetComponent<BoxCollider>();
+    }
+    private void Update()
+    {
+        if (steps != 0) { 
+            StartMoving();
+        }
+    }
     public void StartMoving() {
         StartCoroutine(Move());
     }
     IEnumerator Move() {
+        boxCollider.enabled = false;
         GameManager.instance.isSomeonePlaying = true;
         if (isMoving) { 
             yield break;
@@ -38,6 +52,7 @@ public class PlayerMovement : MonoBehaviour
         }
         isMoving = false;
         GameManager.instance.isSomeonePlaying = false;
+        boxCollider.enabled = true;
     }
     bool MoveToNextTiles(Vector3 targetPos) {
         return targetPos != (transform.position = Vector3.MoveTowards(transform.position, targetPos, 5f * Time.deltaTime));

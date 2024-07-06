@@ -1,41 +1,57 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class Tile : MonoBehaviour
 {
-    private List<Transform> playersOnTile = new List<Transform>();
-    private float gridSize = 3.0f;
+    public Marker[] markers = new Marker[4];
+    [SerializeField] LayerMask playerMask;
 
-    private void OnTriggerEnter(Collider other)
+    private void Awake()
     {
-        if (other.CompareTag("Player"))
+        markers = GetComponentsInChildren<Marker>();
+        playerMask = LayerMask.GetMask("Player");
+    }
+    private void Update()
+    {
+        CheckingForPlayer();
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player")) // Ensure the trigger is activated by a player
         {
-            playersOnTile.Add(other.transform);
-            AdjustPlayerPositions();
+            // Find an available marker for this player
+            for (int i = 0; i < markers.Length; i++)
+            {
+                if (!markers[i].isUnavaliable) // Check if this marker is available
+                {
+                    // Assign this marker to the player and mark it as taken
+                    MovePlayerToMarker(other.transform, markers[i].markerLocation);
+                    markers[i].isUnavaliable = true;
+                    markers[i].playerAssigned = other.GetComponent<PlayerMovement>();
+                    Debug.Log("Debugging");
+                    break; // Exit loop once a marker is assigned
+                }
+            }
         }
     }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
+    void CheckingForPlayer() {
+        foreach (Marker marker in markers)
         {
-            playersOnTile.Remove(other.transform);
-            AdjustPlayerPositions();
+            if (marker.isUnavaliable)
+            {
+                if (Physics.Raycast(marker.transform.position, Vector3.up , out RaycastHit hit, 4f , playerMask))
+                {
+                    marker.playerAssigned = null;
+                    marker.isUnavaliable = false;
+                    Debug.Log("Player Detected");
+                }
+            }
         }
     }
-
-    private void AdjustPlayerPositions()
+    void MovePlayerToMarker(Transform player, Transform marker)
     {
-        int gridColumns = 2; // Number of columns in the grid
-        int gridRows = Mathf.CeilToInt(playersOnTile.Count / (float)gridColumns);
-
-        for (int i = 0; i < playersOnTile.Count; i++)
-        {
-            int column = i % gridColumns;
-            int row = i / gridColumns;
-            Vector3 offset = new Vector3(column * gridSize, 0, row * gridSize);
-            Vector3 targetPos = transform.position + offset - new Vector3((gridColumns - 1) * gridSize / 2, 0, (gridRows - 1) * gridSize / 2);
-            //playersOnTile[i].GetComponent<PlayerMovement>().SetTargetPosition(targetPos);
-        }
+        Vector3 targetPosition = marker.position;
+        player.transform.position = marker.transform.position;
     }
 }
