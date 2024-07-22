@@ -25,6 +25,7 @@ public class TileFunctions : MonoBehaviour
     public void question()
     {
         GameManager.instance.playerBeingQuestioned = true;
+        questionManager.DisplayQuestion();
         cameraController.ShowCard();
         Invoke("CardAnimation", 1f);
     }

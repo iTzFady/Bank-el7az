@@ -37,6 +37,5 @@ public class RollingDice : MonoBehaviour
     {
         num = 0;
         Invoke("ResetPosition" , 1f);
-
     }
 }

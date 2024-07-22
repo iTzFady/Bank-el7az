@@ -27,7 +27,6 @@ public class PlayerMovement : MonoBehaviour
         StartCoroutine(Move());
     }
     IEnumerator Move() {
-        boxCollider.enabled = false;
         GameManager.instance.isSomeonePlaying = true;
         if (isMoving) { 
             yield break;
@@ -52,6 +51,7 @@ public class PlayerMovement : MonoBehaviour
         }
         isMoving = false;
         GameManager.instance.isSomeonePlaying = false;
+        boxCollider.enabled = false;
         boxCollider.enabled = true;
     }
     bool MoveToNextTiles(Vector3 targetPos) {

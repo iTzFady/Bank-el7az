@@ -14,10 +14,10 @@ public class GameManager : MonoBehaviour
     public int currentPlayerindex = 0;
     public bool isSomeonePlaying;
     public bool playerBeingQuestioned;
-    private float time;
+    /*private float time;
     private int frameCount;
     private float pollingTime = 1f;
-    //[SerializeField] Text fps;
+    [SerializeField] Text fps;*/
     private void Awake()
     {
         dice = FindObjectOfType<RollingDice>();
@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        //Application.targetFrameRate = Screen.currentResolution.refreshRate;
+        Application.targetFrameRate = Screen.currentResolution.refreshRate;
         //Application.targetFrameRate = 60;
         cameraController.FollowDice();
         AddPlayers();
@@ -81,19 +81,19 @@ public class GameManager : MonoBehaviour
         currentPlayerindex = (currentPlayerindex + 1) % players.Count;
         StartPlayerTurn();
     }
-    public void FramePerSecond() {
+/*    public void FramePerSecond() {
         time += Time.deltaTime;
         frameCount++;
         if (time >= pollingTime) {
             int frameRate = Mathf.RoundToInt(frameCount / time);
-            //Debug.Log(frameRate);
-            //Debug.Log(Screen.currentResolution.refreshRate);
-            //fps.text = frameRate.ToString();
+            Debug.Log(frameRate);
+            Debug.Log(Screen.currentResolution.refreshRate);
+            fps.text = frameRate.ToString();
             time -= pollingTime;
             frameCount = 0;
         }
 
-    }
+    }*/
 
     
 }

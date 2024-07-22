@@ -18,7 +18,7 @@ public class Tile : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) // Ensure the trigger is activated by a player
+        if (other.CompareTag("Player") && !other.GetComponent<PlayerMovement>().isMoving) // Ensure the trigger is activated by a constant player
         {
             // Find an available marker for this player
             for (int i = 0; i < markers.Length; i++)
@@ -29,7 +29,6 @@ public class Tile : MonoBehaviour
                     MovePlayerToMarker(other.transform, markers[i].markerLocation);
                     markers[i].isUnavaliable = true;
                     markers[i].playerAssigned = other.GetComponent<PlayerMovement>();
-                    Debug.Log("Debugging");
                     break; // Exit loop once a marker is assigned
                 }
             }
@@ -44,14 +43,12 @@ public class Tile : MonoBehaviour
                 {
                     marker.playerAssigned = null;
                     marker.isUnavaliable = false;
-                    Debug.Log("Player Detected");
                 }
             }
         }
     }
     void MovePlayerToMarker(Transform player, Transform marker)
     {
-        Vector3 targetPosition = marker.position;
         player.transform.position = marker.transform.position;
     }
 }

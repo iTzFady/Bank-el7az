@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Linq;
+using RTLTMPro;
 
 public class QuestionManager : MonoBehaviour
 {
@@ -30,13 +31,9 @@ public class QuestionManager : MonoBehaviour
     {
         foreach (var choice in choiceTexts)
         {
-            var collider = choice.gameObject.AddComponent<BoxCollider>();
+            var collider = choice.gameObject.GetComponentInParent<BoxCollider>();
             var textRenderer = choice.GetComponent<Renderer>();
-            collider.size = textRenderer.bounds.size;
         }
-        currentQuestionIndex = Random.Range(0, questions.Count());
-        Debug.Log(currentQuestionIndex);
-        DisplayQuestion(currentQuestionIndex);
     }
     private void Update()
     {
@@ -51,7 +48,7 @@ public class QuestionManager : MonoBehaviour
                 {
                     for (int i = 0; i < choiceTexts.Length; i++)
                     {
-                        if (hit.collider.gameObject == choiceTexts[i].gameObject)
+                        if (hit.collider.gameObject.GetComponentInChildren<RTLTextMeshPro3D>().text == choiceTexts[i].text)
                         {
                             CheckAnswer(i);
                         }
@@ -61,9 +58,10 @@ public class QuestionManager : MonoBehaviour
         }
     }
 
-    void DisplayQuestion(int index)
+    public void DisplayQuestion()
     {
-        Question question = questions[index];
+        currentQuestionIndex = Random.Range(0, questions.Count());
+        Question question = questions[currentQuestionIndex];
         questionText.text = question.questionText;
 
         for (int i = 0; i < question.choices.Length; i++)
@@ -79,7 +77,8 @@ public class QuestionManager : MonoBehaviour
         {
             Debug.Log("Correct!");
             cameraController.FollowDice();
-            Invoke("Delay" , 1f);
+            Invoke("Delay" , 2f);
+            
         }
         else
         {

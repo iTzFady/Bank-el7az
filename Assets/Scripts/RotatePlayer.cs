@@ -1,12 +1,13 @@
 using UnityEngine;
+using UnityEngine.Timeline;
 
 public class RotatePlayer : MonoBehaviour
 {
     // Rotation angle
+    [SerializeField] float targetAngle;
     public float rotationAngle = 90f;
     // Rotation duration in seconds
     public float rotationDuration = 1f;
-
     private Quaternion targetRotation;
     private bool isRotating = false;
     private float rotationTime;
@@ -27,10 +28,9 @@ public class RotatePlayer : MonoBehaviour
             rotationTime = 0;
         }
     }
-
     private void Update()
     {
-        if (isRotating && rotatingObject != null && rotatingObject.GetComponent<PlayerMovement>().isMoving)
+        if (isRotating && rotatingObject != null)
         {
             // Increment the rotation time
             rotationTime += Time.deltaTime;
