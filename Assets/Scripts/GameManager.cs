@@ -13,7 +13,8 @@ public class GameManager : MonoBehaviour
     public List<PlayerMovement> players;
     public int currentPlayerindex = 0;
     public bool isSomeonePlaying;
-    public bool playerBeingQuestioned;
+    public bool isPlayerBusy;
+    public bool isPlayerQuestioned;
     /*private float time;
     private int frameCount;
     private float pollingTime = 1f;
@@ -43,7 +44,7 @@ public class GameManager : MonoBehaviour
     {
         if (dice != null)
         {
-            if (Input.GetMouseButtonDown(0) && !dice.isRolling && !GameManager.instance.isSomeonePlaying && !GameManager.instance.playerBeingQuestioned)
+            if (Input.GetMouseButtonDown(0) && !dice.isRolling && !GameManager.instance.isSomeonePlaying && !GameManager.instance.isPlayerBusy && !GameManager.instance.isPlayerQuestioned)
             {
                 cameraController.FollowDice();
                 dice.RollDice();
@@ -77,7 +78,7 @@ public class GameManager : MonoBehaviour
         players[currentPlayerindex].StartMoving();
     }
     IEnumerator EndPlayerTurn() {
-        yield return new WaitUntil(() => !players[currentPlayerindex].isMoving && !playerBeingQuestioned);
+        yield return new WaitUntil(() => !players[currentPlayerindex].isMoving && !isPlayerBusy);
         currentPlayerindex = (currentPlayerindex + 1) % players.Count;
         StartPlayerTurn();
     }

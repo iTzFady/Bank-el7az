@@ -11,12 +11,12 @@ public class QuestionManager : MonoBehaviour
     public TextMeshPro[] choiceTexts;
     public Question[] questions;
     public Animator cardAnimator;
-    private LayerMask layerMask;
+    [SerializeField] private LayerMask layerMask;
     private int currentQuestionIndex = 0;
 
     private void Awake()
     {
-        layerMask = LayerMask.GetMask("Card");
+        layerMask = LayerMask.GetMask("QuestionCard");
         cameraController = FindObjectOfType<CameraController>();
         if (instance == null)
         {
@@ -37,7 +37,7 @@ public class QuestionManager : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.touchCount > 0 && GameManager.instance.playerBeingQuestioned)
+        if (Input.touchCount > 0 && GameManager.instance.isPlayerQuestioned)
         {
             Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began)
@@ -90,6 +90,6 @@ public class QuestionManager : MonoBehaviour
     }
 
     void Delay() {
-        GameManager.instance.playerBeingQuestioned = false;
+        GameManager.instance.isPlayerQuestioned = false;
     }
 }

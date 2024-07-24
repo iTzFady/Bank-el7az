@@ -6,11 +6,14 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField]
     private TilesMovement currentTile;
-    private int playerPostion;
+    public int playerPostion;
     public int steps = 0;
     public bool isMoving;
     public int playerScore;
     private BoxCollider boxCollider;
+    public bool loseTurn;
+    public bool inJail;
+    public Penalty currentPenalty;
     public HashSet<int> activatedTiles = new HashSet<int>();
 
     private void Awake()

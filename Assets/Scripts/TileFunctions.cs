@@ -4,15 +4,16 @@ public class TileFunctions : MonoBehaviour
 {
     enum tileStations
     {
-        QUESTIONS,
-        SKIPTURN,
-        SCORECHANGE,
-        POSITIONCHANGE,
-        NOTHING,
-        Start
+        Start,
+        Questions,
+        SkipTurn,
+        ScoreChange,
+        PositionChange,
+        Nothing,
+        Penalty
     }
 
-    [SerializeField] tileStations TilesStations = tileStations.NOTHING;
+    [SerializeField] tileStations TilesStations = tileStations.Nothing;
     CameraController cameraController;
     QuestionManager questionManager;
 
@@ -24,11 +25,19 @@ public class TileFunctions : MonoBehaviour
     }
     public void question()
     {
-        GameManager.instance.playerBeingQuestioned = true;
+        GameManager.instance.isPlayerQuestioned = true;
         questionManager.DisplayQuestion();
         cameraController.ShowCard();
-        Invoke("CardAnimation", 1f);
+        Invoke("QuestionCardAnimation", 1f);
     }
+    public void penalty()
+    {
+        GameManager.instance.isPlayerBusy = true;
+        questionManager.DisplayQuestion();
+        //cameraController.ShowCard();
+        Invoke("PenaltyCardAnimation", 1f);
+    }
+
 
     public void SkipTurn()
     {
@@ -53,11 +62,6 @@ public class TileFunctions : MonoBehaviour
         return GameManager.instance.players[GameManager.instance.currentPlayerindex].steps += position;
     }
 
-    public void CardAnimation()
-    {
-        questionManager.cardAnimator.SetTrigger("Show");
-    }
-
     private void OnTriggerStay(Collider other)
     {
         int currentPlayerIndex = GameManager.instance.currentPlayerindex;
@@ -72,21 +76,25 @@ public class TileFunctions : MonoBehaviour
                     player.activatedTiles.Add(int.Parse(gameObject.name));
                     switch (TilesStations)
                     {
-                        case tileStations.QUESTIONS:
+                        case tileStations.Questions:
                             question();
                             //Debug.LogError("question" + other.gameObject.name);
                             break;
-                        case tileStations.SKIPTURN:
+                        case tileStations.SkipTurn:
                             SkipTurn();
                             Debug.LogError("skip turn" + other.gameObject.name);
                             break;
-                        case tileStations.SCORECHANGE:
+                        case tileStations.ScoreChange:
                             scoreChange(GameManager.instance.players[currentPlayerIndex].playerScore);
                             Debug.LogError("score change" + other.gameObject.name);
                             break;
-                        case tileStations.POSITIONCHANGE:
+                        case tileStations.PositionChange:
                             positionChange(GameManager.instance.players[currentPlayerIndex].steps);
                             Debug.LogError("position change" + other.gameObject.name);
+                            break;
+                        case tileStations.Penalty:
+                            PenaltyManager.instance.AssignPenalty(player);
+                            penalty();
                             break;
                         default:
                             break;
@@ -99,5 +107,13 @@ public class TileFunctions : MonoBehaviour
                 }
             }
         }
+    }
+    public void QuestionCardAnimation()
+    {
+        QuestionManager.instance.cardAnimator.SetTrigger("Show");
+    }
+    public void PenaltyCardAnimation()
+    {
+        PenaltyManager.instance.cardAnimator.SetTrigger("Show");
     }
 }
