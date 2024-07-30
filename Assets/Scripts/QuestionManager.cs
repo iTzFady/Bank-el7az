@@ -6,18 +6,20 @@ using RTLTMPro;
 public class QuestionManager : MonoBehaviour
 {
     public static QuestionManager instance;
-    private CameraController cameraController;
+    private CameraManager cameraManager;
     public TextMeshPro questionText;
     public TextMeshPro[] choiceTexts;
     public Question[] questions;
     public Animator cardAnimator;
-    [SerializeField] private LayerMask layerMask;
+    private LayerMask layerMask;
     private int currentQuestionIndex = 0;
+    [SerializeField] Material greekMaterial;
+    [SerializeField] Material redMaterial;
 
     private void Awake()
     {
         layerMask = LayerMask.GetMask("QuestionCard");
-        cameraController = FindObjectOfType<CameraController>();
+        cameraManager = FindObjectOfType<CameraManager>();
         if (instance == null)
         {
             instance = this;
@@ -44,7 +46,7 @@ public class QuestionManager : MonoBehaviour
             {
                 Ray ray = Camera.main.ScreenPointToRay(touch.position);
                 RaycastHit hit;
-                if (Physics.Raycast(ray, out hit , layerMask))
+                if (Physics.Raycast(ray, out hit, layerMask))
                 {
                     for (int i = 0; i < choiceTexts.Length; i++)
                     {
@@ -76,20 +78,22 @@ public class QuestionManager : MonoBehaviour
         if (choiceIndex == questions[currentQuestionIndex].correctChoiceIndex)
         {
             Debug.Log("Correct!");
-            cameraController.FollowDice();
-            Invoke("Delay" , 2f);
-            
+            cameraManager.switchToCamera((int)CameraManager.CameraType.Dice, null);
+            choiceTexts[choiceIndex].transform.parent.gameObject.GetComponent<MeshRenderer>().material = greekMaterial;
+            Invoke("Delay", 2f);
         }
         else
         {
             Debug.Log("Wrong!");
-            cameraController.FollowDice();
+            cameraManager.switchToCamera((int)CameraManager.CameraType.Dice, null);
+            choiceTexts[choiceIndex].transform.parent.gameObject.GetComponent<MeshRenderer>().material = redMaterial;
             Invoke("Delay", 1f);
         }
         cardAnimator.SetTrigger("Hide");
     }
 
-    void Delay() {
+    void Delay()
+    {
         GameManager.instance.isPlayerQuestioned = false;
     }
 }

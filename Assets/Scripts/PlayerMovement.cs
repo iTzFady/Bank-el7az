@@ -22,26 +22,32 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Update()
     {
-        if (steps != 0) { 
+        if (steps != 0)
+        {
             StartMoving();
         }
     }
-    public void StartMoving() {
+    public void StartMoving()
+    {
         StartCoroutine(Move());
     }
-    IEnumerator Move() {
+    IEnumerator Move()
+    {
         GameManager.instance.isSomeonePlaying = true;
-        if (isMoving) { 
+        if (isMoving)
+        {
             yield break;
         }
         isMoving = true;
         while (steps != 0)
         {
-            if (steps > 0) {
+            if (steps > 0)
+            {
                 playerPostion++;
                 steps--;
-            } 
-            if (steps < 0) {
+            }
+            if (steps < 0)
+            {
                 playerPostion--;
                 steps++;
             }
@@ -57,7 +63,8 @@ public class PlayerMovement : MonoBehaviour
         boxCollider.enabled = false;
         boxCollider.enabled = true;
     }
-    bool MoveToNextTiles(Vector3 targetPos) {
+    bool MoveToNextTiles(Vector3 targetPos)
+    {
         return targetPos != (transform.position = Vector3.MoveTowards(transform.position, targetPos, 5f * Time.deltaTime));
     }
 }

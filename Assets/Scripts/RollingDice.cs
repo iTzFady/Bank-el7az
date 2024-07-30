@@ -5,7 +5,7 @@ public class RollingDice : MonoBehaviour
 {
     Rigidbody diceBody;
     [SerializeField] private float maxRandomForceValue, rollingForce;
-    private float forceX, forceY , forceZ;
+    private float forceX, forceY, forceZ;
     public int num;
     public bool isRolling;
     private void Awake()
@@ -16,26 +16,28 @@ public class RollingDice : MonoBehaviour
     {
         isRolling = true;
         diceBody.isKinematic = false;
-        forceX = Random.Range(0 , maxRandomForceValue);
+        forceX = Random.Range(0, maxRandomForceValue);
         forceY = Random.Range(0, maxRandomForceValue);
-        forceZ = Random.Range(0 ,maxRandomForceValue);
+        forceZ = Random.Range(0, maxRandomForceValue);
         diceBody.AddForce(Vector3.up * rollingForce);
         diceBody.AddTorque(forceX, forceY, forceZ);
     }
-    private void Initialize() { 
+    private void Initialize()
+    {
         diceBody = GetComponent<Rigidbody>();
         diceBody.isKinematic = true;
-        transform.rotation = new Quaternion(Random.Range(0 , 360) , Random.Range(0, 360) , Random.Range(0 , 360), 0);
+        transform.rotation = new Quaternion(Random.Range(0, 360), Random.Range(0, 360), Random.Range(0, 360), 0);
     }
-    private void ResetPosition() {
+    private void ResetPosition()
+    {
         diceBody.isKinematic = true;
         isRolling = false;
         transform.rotation = new Quaternion(Random.Range(0, 360), Random.Range(0, 360), Random.Range(0, 360), 0);
-        transform.position = new Vector3(10.24f, 5.3f, 11.03f);
+        transform.position = new Vector3(12f, 8f, 20f);
     }
     public void ResetDice()
     {
         num = 0;
-        Invoke("ResetPosition" , 1f);
+        Invoke("ResetPosition", 1f);
     }
 }

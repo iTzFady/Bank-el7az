@@ -14,27 +14,29 @@ public class TileFunctions : MonoBehaviour
     }
 
     [SerializeField] tileStations TilesStations = tileStations.Nothing;
-    CameraController cameraController;
+    //CameraController cameraController;
+    CameraManager cameraManager;
     QuestionManager questionManager;
 
 
     private void Awake()
     {
-        cameraController = FindObjectOfType<CameraController>();
+        //cameraController = FindObjectOfType<CameraController>();
         questionManager = FindObjectOfType<QuestionManager>();
+        cameraManager = FindObjectOfType<CameraManager>();
     }
     public void question()
     {
         GameManager.instance.isPlayerQuestioned = true;
         questionManager.DisplayQuestion();
-        cameraController.ShowCard();
+        cameraManager.switchToCamera((int)CameraManager.CameraType.Question, null);
         Invoke("QuestionCardAnimation", 1f);
     }
     public void penalty()
     {
         GameManager.instance.isPlayerBusy = true;
         questionManager.DisplayQuestion();
-        //cameraController.ShowCard();
+        cameraManager.switchToCamera((int)CameraManager.CameraType.Penalty, null);
         Invoke("PenaltyCardAnimation", 1f);
     }
 
@@ -66,7 +68,7 @@ public class TileFunctions : MonoBehaviour
     {
         int currentPlayerIndex = GameManager.instance.currentPlayerindex;
         PlayerMovement player = other.GetComponent<PlayerMovement>();
-       
+
         if (!player.isMoving)
         {
             if (TilesStations != tileStations.Start)
@@ -78,7 +80,6 @@ public class TileFunctions : MonoBehaviour
                     {
                         case tileStations.Questions:
                             question();
-                            //Debug.LogError("question" + other.gameObject.name);
                             break;
                         case tileStations.SkipTurn:
                             SkipTurn();

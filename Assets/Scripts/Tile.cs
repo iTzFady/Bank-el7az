@@ -1,6 +1,4 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 public class Tile : MonoBehaviour
 {
@@ -34,12 +32,13 @@ public class Tile : MonoBehaviour
             }
         }
     }
-    void CheckingForPlayer() {
+    void CheckingForPlayer()
+    {
         foreach (Marker marker in markers)
         {
             if (marker.isUnavaliable)
             {
-                if (Physics.Raycast(marker.transform.position, Vector3.up , out RaycastHit hit, 4f , playerMask))
+                if (Physics.Raycast(marker.transform.position, Vector3.up, out RaycastHit hit, 4f, playerMask))
                 {
                     marker.playerAssigned = null;
                     marker.isUnavaliable = false;

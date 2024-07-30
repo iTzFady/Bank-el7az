@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,34 +7,33 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     RollingDice dice;
-    CameraController cameraController;
+    CameraManager cameraManager;
     PlayerMovement[] objects;
     public List<PlayerMovement> players;
     public int currentPlayerindex = 0;
     public bool isSomeonePlaying;
     public bool isPlayerBusy;
     public bool isPlayerQuestioned;
-    /*private float time;
+    private float time;
     private int frameCount;
     private float pollingTime = 1f;
-    [SerializeField] Text fps;*/
+    [SerializeField] Text fps;
     private void Awake()
     {
         dice = FindObjectOfType<RollingDice>();
-        cameraController = FindObjectOfType<CameraController>();
+        cameraManager = FindObjectOfType<CameraManager>();
         if (instance == null)
         {
             instance = this;
         }
-        else { 
+        else
+        {
             Destroy(gameObject);
         }
     }
     private void Start()
     {
-        Application.targetFrameRate = Screen.currentResolution.refreshRate;
-        //Application.targetFrameRate = 60;
-        cameraController.FollowDice();
+        //Application.targetFrameRate = Screen.currentResolution.refreshRate;
         AddPlayers();
         StartPlayerTurn();
     }
@@ -46,56 +44,61 @@ public class GameManager : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0) && !dice.isRolling && !GameManager.instance.isSomeonePlaying && !GameManager.instance.isPlayerBusy && !GameManager.instance.isPlayerQuestioned)
             {
-                cameraController.FollowDice();
+                cameraManager.switchToCamera((int)(CameraManager.CameraType.Dice), null);
                 dice.RollDice();
             }
         }
         if (!GameManager.instance.isSomeonePlaying && dice.num > 0)
         {
-            cameraController.FollowPlayer(players[currentPlayerindex].transform);
+            cameraManager.switchToCamera((int)(CameraManager.CameraType.Player), players[currentPlayerindex]);
             players[currentPlayerindex].steps = dice.num;
             dice.ResetDice();
             players[currentPlayerindex].StartMoving();
             StartCoroutine(EndPlayerTurn());
         }
-        if (!GameManager.instance.isSomeonePlaying && players[currentPlayerindex].steps < 0) {
-            cameraController.FollowPlayer(players[currentPlayerindex].transform);
+        if (!GameManager.instance.isSomeonePlaying && players[currentPlayerindex].steps < 0)
+        {
+            cameraManager.switchToCamera((int)(CameraManager.CameraType.Player), players[currentPlayerindex]);
             players[currentPlayerindex].StartMoving();
         }
-        //FramePerSecond();
+        FramePerSecond();
     }
-    void AddPlayers() {
+    void AddPlayers()
+    {
         players.Clear();
         objects = FindObjectsOfType<PlayerMovement>();
         foreach (PlayerMovement obj in objects)
         {
-            if (obj.tag == "Player") {
+            if (obj.tag == "Player")
+            {
                 players.Add(obj);
             }
         }
     }
-    void StartPlayerTurn() {
+    void StartPlayerTurn()
+    {
         players[currentPlayerindex].StartMoving();
     }
-    IEnumerator EndPlayerTurn() {
+    IEnumerator EndPlayerTurn()
+    {
         yield return new WaitUntil(() => !players[currentPlayerindex].isMoving && !isPlayerBusy);
         currentPlayerindex = (currentPlayerindex + 1) % players.Count;
+        cameraManager.switchToCamera((int)CameraManager.CameraType.Dice, null);
         StartPlayerTurn();
     }
-/*    public void FramePerSecond() {
+    public void FramePerSecond()
+    {
         time += Time.deltaTime;
         frameCount++;
-        if (time >= pollingTime) {
+        if (time >= pollingTime)
+        {
             int frameRate = Mathf.RoundToInt(frameCount / time);
-            Debug.Log(frameRate);
-            Debug.Log(Screen.currentResolution.refreshRate);
+            // Debug.Log(frameRate);
+            // Debug.Log(Screen.currentResolution.refreshRate);
             fps.text = frameRate.ToString();
             time -= pollingTime;
             frameCount = 0;
         }
-
-    }*/
-
-    
+    }
 }
 

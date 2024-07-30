@@ -1,23 +1,23 @@
 using UnityEngine;
 using TMPro;
 using System.Linq;
-using RTLTMPro;
+using System.Collections;
 
 public class PenaltyManager : MonoBehaviour
 {
     public static PenaltyManager instance;
-    private CameraController cameraController;
     public TextMeshPro penaltyDes;
     public TextMeshPro penaltyText;
     public Penalty[] penalties;
     public Animator cardAnimator;
-    [SerializeField] private LayerMask layerMask;
+    private LayerMask layerMask;
     private int currentPenaityIndex = 0;
+    private CameraManager cameraManager;
 
     private void Awake()
     {
         layerMask = LayerMask.GetMask("PenaltyCard");
-        cameraController = FindObjectOfType<CameraController>();
+        cameraManager = FindObjectOfType<CameraManager>();
         if (instance == null)
         {
             instance = this;
@@ -38,9 +38,10 @@ public class PenaltyManager : MonoBehaviour
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit, layerMask))
                 {
-                    GameManager.instance.isPlayerBusy = false;
+                    //GameManager.instance.isPlayerBusy = false;
                     cardAnimator.SetTrigger("Hide");
-
+                    cameraManager.switchToCamera((int)CameraManager.CameraType.Dice, null);
+                    Invoke("Delay", 7f);
                 }
             }
         }
@@ -50,17 +51,23 @@ public class PenaltyManager : MonoBehaviour
         penaltyDes.text = penalties[currentPenaityIndex].penaltyDescription;
         penaltyText.text = penalties[currentPenaityIndex].penaltyText;
     }
-    public void AssignPenalty(PlayerMovement player) {
+    public void AssignPenalty(PlayerMovement player)
+    {
         currentPenaityIndex = Random.Range(0, penalties.Count());
         player.currentPenalty = penalties[currentPenaityIndex];
         DisplayQuestion();
-        Debug.Log(player.currentPenalty.penaltyDescription + player.name);
+        StartCoroutine(ExecutePenalty(player));
+
+    }
+    IEnumerator ExecutePenalty(PlayerMovement player)
+    {
+        yield return new WaitUntil(() => !GameManager.instance.isPlayerBusy && cardAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 2);
         switch (player.currentPenalty.penaltyType)
         {
             case Penalty.PenaltyType.GoBackToStart:
                 player.steps = -player.playerPostion;
                 break;
-            case Penalty.PenaltyType.SkipTurns: 
+            case Penalty.PenaltyType.SkipTurns:
                 break;
             case Penalty.PenaltyType.LoseStar:
                 player.playerScore -= player.currentPenalty.penaltyValue;
@@ -76,9 +83,9 @@ public class PenaltyManager : MonoBehaviour
             case Penalty.PenaltyType.MoveForwardSpaces:
                 player.steps += player.currentPenalty.penaltyValue;
                 break;
-            case Penalty.PenaltyType.GoToJail: 
+            case Penalty.PenaltyType.GoToJail:
                 break;
-            case Penalty.PenaltyType.JailBreakCard: 
+            case Penalty.PenaltyType.JailBreakCard:
                 break;
             case Penalty.PenaltyType.CancelPenaltyCard:
                 break;
@@ -87,6 +94,7 @@ public class PenaltyManager : MonoBehaviour
             case Penalty.PenaltyType.StayPut:
                 break;
         }
+
     }
     void Delay()
     {

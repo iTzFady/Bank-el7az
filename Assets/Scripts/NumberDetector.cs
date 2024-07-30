@@ -11,9 +11,12 @@ public class NumberDetector : MonoBehaviour
     }
     private void OnTriggerStay(Collider other)
     {
-        if (rollingDice != null && rollingDice.isRolling) {
-            if (rollingDice.GetComponent<Rigidbody>().velocity == Vector3.zero) {
-                if (!playerMovement.isMoving) {
+        if (rollingDice != null && rollingDice.isRolling)
+        {
+            if (rollingDice.GetComponent<Rigidbody>().velocity == Vector3.zero)
+            {
+                if (!playerMovement.isMoving)
+                {
                     rollingDice.num = int.Parse(other.name);
                 }
                 rollingDice.isRolling = false;
