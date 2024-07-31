@@ -15,6 +15,7 @@ public class QuestionManager : MonoBehaviour
     private int currentQuestionIndex = 0;
     [SerializeField] Material greekMaterial;
     [SerializeField] Material redMaterial;
+    [SerializeField] Material defaultMaterial;
 
     private void Awake()
     {
@@ -55,6 +56,7 @@ public class QuestionManager : MonoBehaviour
                             CheckAnswer(i);
                         }
                     }
+                    cameraManager.switchToCamera((int)CameraManager.CameraType.Dice, null);
                 }
             }
         }
@@ -77,15 +79,13 @@ public class QuestionManager : MonoBehaviour
     {
         if (choiceIndex == questions[currentQuestionIndex].correctChoiceIndex)
         {
-            Debug.Log("Correct!");
-            cameraManager.switchToCamera((int)CameraManager.CameraType.Dice, null);
+            //Debug.Log("Correct!");
             choiceTexts[choiceIndex].transform.parent.gameObject.GetComponent<MeshRenderer>().material = greekMaterial;
             Invoke("Delay", 2f);
         }
         else
         {
-            Debug.Log("Wrong!");
-            cameraManager.switchToCamera((int)CameraManager.CameraType.Dice, null);
+            //Debug.Log("Wrong!");
             choiceTexts[choiceIndex].transform.parent.gameObject.GetComponent<MeshRenderer>().material = redMaterial;
             Invoke("Delay", 1f);
         }
@@ -95,5 +95,9 @@ public class QuestionManager : MonoBehaviour
     void Delay()
     {
         GameManager.instance.isPlayerQuestioned = false;
+        for (int i = 0; i < choiceTexts.Length; i++)
+        {
+            choiceTexts[i].transform.parent.gameObject.GetComponent<MeshRenderer>().material = defaultMaterial;
+        }
     }
 }

@@ -33,7 +33,7 @@ public class RollingDice : MonoBehaviour
         diceBody.isKinematic = true;
         isRolling = false;
         transform.rotation = new Quaternion(Random.Range(0, 360), Random.Range(0, 360), Random.Range(0, 360), 0);
-        transform.position = new Vector3(12f, 8f, 20f);
+        transform.position = new Vector3(20, 8, 30);
     }
     public void ResetDice()
     {

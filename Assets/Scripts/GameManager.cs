@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0) && !dice.isRolling && !GameManager.instance.isSomeonePlaying && !GameManager.instance.isPlayerBusy && !GameManager.instance.isPlayerQuestioned)
             {
-                cameraManager.switchToCamera((int)(CameraManager.CameraType.Dice), null);
+                cameraManager.switchToCamera((int)CameraManager.CameraType.Dice, null);
                 dice.RollDice();
             }
         }
@@ -60,6 +60,10 @@ public class GameManager : MonoBehaviour
         {
             cameraManager.switchToCamera((int)(CameraManager.CameraType.Player), players[currentPlayerindex]);
             players[currentPlayerindex].StartMoving();
+        }
+        if (!GameManager.instance.isPlayerBusy && !GameManager.instance.isPlayerQuestioned && !GameManager.instance.isSomeonePlaying && (cameraManager.currentCameraIndex != (int)CameraManager.CameraType.Dice))
+        {
+            cameraManager.switchToCamera((int)CameraManager.CameraType.Dice, null);
         }
         FramePerSecond();
     }
@@ -83,7 +87,6 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitUntil(() => !players[currentPlayerindex].isMoving && !isPlayerBusy);
         currentPlayerindex = (currentPlayerindex + 1) % players.Count;
-        cameraManager.switchToCamera((int)CameraManager.CameraType.Dice, null);
         StartPlayerTurn();
     }
     public void FramePerSecond()

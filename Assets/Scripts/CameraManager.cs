@@ -3,7 +3,7 @@ using Cinemachine;
 
 public class CameraManager : MonoBehaviour
 {
-    private int currentCameraIndex = 0;
+    public int currentCameraIndex = 0;
     public CinemachineVirtualCamera[] virtualCameras;
     public enum CameraType
     {
@@ -14,7 +14,6 @@ public class CameraManager : MonoBehaviour
     }
     void Start()
     {
-        switchToCamera((int)CameraType.Dice, null);
         for (int i = 1; i < virtualCameras.Length; i++)
         {
             virtualCameras[i].gameObject.SetActive(false);

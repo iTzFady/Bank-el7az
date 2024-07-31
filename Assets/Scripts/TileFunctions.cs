@@ -27,9 +27,10 @@ public class TileFunctions : MonoBehaviour
     }
     public void question()
     {
+        cameraManager.switchToCamera((int)CameraManager.CameraType.Question, null);
+        Debug.Log((int)CameraManager.CameraType.Question);
         GameManager.instance.isPlayerQuestioned = true;
         questionManager.DisplayQuestion();
-        cameraManager.switchToCamera((int)CameraManager.CameraType.Question, null);
         Invoke("QuestionCardAnimation", 1f);
     }
     public void penalty()

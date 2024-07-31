@@ -1,7 +1,6 @@
 using UnityEngine;
 using TMPro;
 using System.Linq;
-using System.Collections;
 
 public class PenaltyManager : MonoBehaviour
 {
@@ -38,10 +37,9 @@ public class PenaltyManager : MonoBehaviour
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit, layerMask))
                 {
-                    //GameManager.instance.isPlayerBusy = false;
-                    cardAnimator.SetTrigger("Hide");
+                    GameManager.instance.isPlayerBusy = false;
                     cameraManager.switchToCamera((int)CameraManager.CameraType.Dice, null);
-                    Invoke("Delay", 7f);
+                    cardAnimator.SetTrigger("Hide");
                 }
             }
         }
@@ -56,12 +54,11 @@ public class PenaltyManager : MonoBehaviour
         currentPenaityIndex = Random.Range(0, penalties.Count());
         player.currentPenalty = penalties[currentPenaityIndex];
         DisplayQuestion();
-        StartCoroutine(ExecutePenalty(player));
+        ExecutePenalty(player);
 
     }
-    IEnumerator ExecutePenalty(PlayerMovement player)
+    void ExecutePenalty(PlayerMovement player)
     {
-        yield return new WaitUntil(() => !GameManager.instance.isPlayerBusy && cardAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 2);
         switch (player.currentPenalty.penaltyType)
         {
             case Penalty.PenaltyType.GoBackToStart:
@@ -84,6 +81,7 @@ public class PenaltyManager : MonoBehaviour
                 player.steps += player.currentPenalty.penaltyValue;
                 break;
             case Penalty.PenaltyType.GoToJail:
+                player.steps = (19 - player.playerPostion);
                 break;
             case Penalty.PenaltyType.JailBreakCard:
                 break;

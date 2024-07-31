@@ -10,13 +10,15 @@ public class TilesMovement : MonoBehaviour
     {
         FillList();
     }
-    void FillList() { 
+    void FillList()
+    {
         tilesList.Clear();
         tiles = GetComponentsInChildren<Transform>();
 
         foreach (Transform tile in tiles)
         {
-            if (tile !=  this.transform && tile.tag == "Tile") { 
+            if (tile != this.transform && tile.tag == "Tile")
+            {
                 tilesList.Add(tile);
             }
         }
