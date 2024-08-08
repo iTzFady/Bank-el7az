@@ -2,8 +2,9 @@ using UnityEngine;
 using TMPro;
 using System.Linq;
 using RTLTMPro;
+using Mirror;
 
-public class QuestionManager : MonoBehaviour
+public class QuestionManager : NetworkBehaviour
 {
     public static QuestionManager instance;
     private CameraManager cameraManager;

@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
-    [SerializeField]
     private TilesMovement currentTile;
     public int playerPostion;
     public int steps = 0;
@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         boxCollider = GetComponent<BoxCollider>();
+        currentTile = FindObjectOfType<TilesMovement>();
     }
     private void Update()
     {

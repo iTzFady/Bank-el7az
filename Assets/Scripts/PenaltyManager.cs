@@ -1,8 +1,10 @@
 using UnityEngine;
 using TMPro;
 using System.Linq;
+using UnityEditor;
+using Mirror;
 
-public class PenaltyManager : MonoBehaviour
+public class PenaltyManager : NetworkBehaviour
 {
     public static PenaltyManager instance;
     public TextMeshPro penaltyDes;
@@ -59,9 +61,11 @@ public class PenaltyManager : MonoBehaviour
     }
     void ExecutePenalty(PlayerMovement player)
     {
+        player.currentPenalty.playerLastScore = player.playerScore;
         switch (player.currentPenalty.penaltyType)
         {
             case Penalty.PenaltyType.GoBackToStart:
+                player.currentPenalty.playerLastLocation = player.playerPostion;
                 player.steps = -player.playerPostion;
                 break;
             case Penalty.PenaltyType.SkipTurns:
@@ -75,17 +79,31 @@ public class PenaltyManager : MonoBehaviour
             case Penalty.PenaltyType.QuestionToFriend:
                 break;
             case Penalty.PenaltyType.MoveBackSpaces:
+                player.currentPenalty.playerLastLocation = player.playerPostion;
                 player.steps -= player.currentPenalty.penaltyValue;
                 break;
             case Penalty.PenaltyType.MoveForwardSpaces:
+                player.currentPenalty.playerLastLocation = player.playerPostion;
                 player.steps += player.currentPenalty.penaltyValue;
                 break;
             case Penalty.PenaltyType.GoToJail:
+                player.currentPenalty.playerLastLocation = player.playerPostion;
                 player.steps = (19 - player.playerPostion);
                 break;
             case Penalty.PenaltyType.JailBreakCard:
+                player.steps = player.playerPostion - player.currentPenalty.playerLastLocation;
                 break;
             case Penalty.PenaltyType.CancelPenaltyCard:
+                player.inJail = false;
+                player.loseTurn = false;
+                if (player.playerPostion != player.currentPenalty.playerLastLocation)
+                {
+                    player.steps = (player.currentPenalty.playerLastLocation = player.playerPostion);
+                }
+                if (player.playerScore != player.currentPenalty.playerLastScore)
+                {
+                    player.playerScore -= player.currentPenalty.playerLastScore;
+                }
                 break;
             case Penalty.PenaltyType.JudgeFriends:
                 break;

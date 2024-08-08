@@ -1,19 +1,24 @@
 using UnityEngine;
-
+using Mirror;
 [RequireComponent(typeof(Rigidbody))]
-public class RollingDice : MonoBehaviour
+public class RollingDice : NetworkBehaviour
 {
     Rigidbody diceBody;
-    [SerializeField] private float maxRandomForceValue, rollingForce;
-    private float forceX, forceY, forceZ;
-    public int num;
-    public bool isRolling;
+    [SyncVar][SerializeField] private float maxRandomForceValue, rollingForce;
+    [SyncVar] private float forceX, forceY, forceZ;
+    [SyncVar] public int num;
+    [SyncVar] public bool isRolling;
+    NetworkIdentity networkIdentity;
+    NetworkConnectionToClient connection;
     private void Awake()
     {
         Initialize();
     }
+
+    [Command(requiresAuthority = false)]
     public void RollDice()
     {
+        Debug.Log("TextDice");
         isRolling = true;
         diceBody.isKinematic = false;
         forceX = Random.Range(0, maxRandomForceValue);

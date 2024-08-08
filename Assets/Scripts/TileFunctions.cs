@@ -1,3 +1,4 @@
+using Mirror;
 using UnityEngine;
 
 public class TileFunctions : MonoBehaviour
@@ -69,7 +70,6 @@ public class TileFunctions : MonoBehaviour
     {
         int currentPlayerIndex = GameManager.instance.currentPlayerindex;
         PlayerMovement player = other.GetComponent<PlayerMovement>();
-
         if (!player.isMoving)
         {
             if (TilesStations != tileStations.Start)

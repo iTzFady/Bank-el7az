@@ -5,8 +5,11 @@ public class Penalty
     public string penaltyText;
     public PenaltyType penaltyType;
     public int penaltyValue;
+    public int playerLastLocation;
+    public int playerLastScore;
 
-    public enum PenaltyType {
+    public enum PenaltyType
+    {
         GoBackToStart,
         SkipTurns,
         LoseStar,

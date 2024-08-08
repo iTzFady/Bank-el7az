@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
     public static GameManager instance;
     RollingDice dice;
@@ -11,9 +12,10 @@ public class GameManager : MonoBehaviour
     PlayerMovement[] objects;
     public List<PlayerMovement> players;
     public int currentPlayerindex = 0;
-    public bool isSomeonePlaying;
-    public bool isPlayerBusy;
-    public bool isPlayerQuestioned;
+    [SyncVar] public bool isSomeonePlaying;
+    [SyncVar] public bool isPlayerBusy;
+    [SyncVar] public bool isPlayerQuestioned;
+    private MyNetworkManager myNetworkServer;
     private float time;
     private int frameCount;
     private float pollingTime = 1f;
@@ -22,6 +24,7 @@ public class GameManager : MonoBehaviour
     {
         dice = FindObjectOfType<RollingDice>();
         cameraManager = FindObjectOfType<CameraManager>();
+        myNetworkServer = (MyNetworkManager)NetworkManager.singleton;
         if (instance == null)
         {
             instance = this;
@@ -34,18 +37,18 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         //Application.targetFrameRate = Screen.currentResolution.refreshRate;
-        AddPlayers();
-        StartPlayerTurn();
+        //AddPlayers();
+        //StartPlayerTurn();
     }
     // Update is called once per frame
     void Update()
     {
+
         if (dice != null)
         {
             if (Input.GetMouseButtonDown(0) && !dice.isRolling && !GameManager.instance.isSomeonePlaying && !GameManager.instance.isPlayerBusy && !GameManager.instance.isPlayerQuestioned)
             {
-                cameraManager.switchToCamera((int)CameraManager.CameraType.Dice, null);
-                dice.RollDice();
+                cmdRollingDice();
             }
         }
         if (!GameManager.instance.isSomeonePlaying && dice.num > 0)
@@ -65,19 +68,20 @@ public class GameManager : MonoBehaviour
         {
             cameraManager.switchToCamera((int)CameraManager.CameraType.Dice, null);
         }
-        FramePerSecond();
+        // FramePerSecond();
     }
-    void AddPlayers()
+    public void AddPlayers(PlayerMovement currentPlayer)
     {
-        players.Clear();
+        //players.Clear();
         objects = FindObjectsOfType<PlayerMovement>();
-        foreach (PlayerMovement obj in objects)
-        {
-            if (obj.tag == "Player")
-            {
-                players.Add(obj);
-            }
-        }
+        // foreach (PlayerMovement obj in objects)
+        // {
+        //     if (obj.tag == "Player")
+        //     {
+        //         players.Add(obj);
+        //     }
+        // }
+        players.Add(currentPlayer);
     }
     void StartPlayerTurn()
     {
@@ -88,6 +92,12 @@ public class GameManager : MonoBehaviour
         yield return new WaitUntil(() => !players[currentPlayerindex].isMoving && !isPlayerBusy);
         currentPlayerindex = (currentPlayerindex + 1) % players.Count;
         StartPlayerTurn();
+    }
+    [Command(requiresAuthority = false)]
+    void cmdRollingDice()
+    {
+        cameraManager.switchToCamera((int)CameraManager.CameraType.Dice, null);
+        dice.RollDice();
     }
     public void FramePerSecond()
     {
