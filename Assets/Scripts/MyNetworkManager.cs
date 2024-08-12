@@ -34,4 +34,9 @@ public class MyNetworkManager : NetworkManager
         //Changing player to it's connection id
         player.name = $"{playerPrefab.name} [connId={conn.connectionId}]";
     }
+    public override void OnServerDisconnect(NetworkConnectionToClient conn)
+    {
+        GameManager.instance.players.Remove(GameManager.instance.players[conn.connectionId]);
+        base.OnServerDisconnect(conn);
+    }
 }

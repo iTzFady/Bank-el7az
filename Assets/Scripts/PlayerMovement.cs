@@ -6,15 +6,15 @@ using UnityEngine;
 public class PlayerMovement : NetworkBehaviour
 {
     private TilesMovement currentTile;
-    public int playerPostion;
+    [SyncVar] public int playerPostion;
     public int steps = 0;
-    public bool isMoving;
-    public int playerScore;
+    [SyncVar] public bool isMoving;
+    [SyncVar] public int playerScore = 0;
     private BoxCollider boxCollider;
-    public bool loseTurn;
-    public bool inJail;
+    [SyncVar] public bool loseTurn;
+    [SyncVar] public bool inJail;
     public Penalty currentPenalty;
-    public HashSet<int> activatedTiles = new HashSet<int>();
+    public SyncHashSet<int> activatedTiles = new SyncHashSet<int>();
 
     private void Awake()
     {

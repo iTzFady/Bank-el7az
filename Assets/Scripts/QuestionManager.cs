@@ -3,7 +3,6 @@ using TMPro;
 using System.Linq;
 using RTLTMPro;
 using Mirror;
-
 public class QuestionManager : NetworkBehaviour
 {
     public static QuestionManager instance;
@@ -13,8 +12,9 @@ public class QuestionManager : NetworkBehaviour
     public Question[] questions;
     public Animator cardAnimator;
     private LayerMask layerMask;
+    [SyncVar]
     private int currentQuestionIndex = 0;
-    [SerializeField] Material greekMaterial;
+    [SerializeField] Material greenMaterial;
     [SerializeField] Material redMaterial;
     [SerializeField] Material defaultMaterial;
 
@@ -81,7 +81,7 @@ public class QuestionManager : NetworkBehaviour
         if (choiceIndex == questions[currentQuestionIndex].correctChoiceIndex)
         {
             //Debug.Log("Correct!");
-            choiceTexts[choiceIndex].transform.parent.gameObject.GetComponent<MeshRenderer>().material = greekMaterial;
+            choiceTexts[choiceIndex].transform.parent.gameObject.GetComponent<MeshRenderer>().material = greenMaterial;
             Invoke("Delay", 2f);
         }
         else

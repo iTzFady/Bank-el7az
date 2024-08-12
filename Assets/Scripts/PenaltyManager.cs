@@ -1,8 +1,8 @@
 using UnityEngine;
 using TMPro;
 using System.Linq;
-using UnityEditor;
 using Mirror;
+using Random = System.Random;
 
 public class PenaltyManager : NetworkBehaviour
 {
@@ -12,7 +12,7 @@ public class PenaltyManager : NetworkBehaviour
     public Penalty[] penalties;
     public Animator cardAnimator;
     private LayerMask layerMask;
-    private int currentPenaityIndex = 0;
+    public int currentPenaityIndex;
     private CameraManager cameraManager;
 
     private void Awake()
@@ -46,18 +46,18 @@ public class PenaltyManager : NetworkBehaviour
             }
         }
     }
-    public void DisplayQuestion()
+    public void DisplayPenalty()
     {
         penaltyDes.text = penalties[currentPenaityIndex].penaltyDescription;
         penaltyText.text = penalties[currentPenaityIndex].penaltyText;
     }
     public void AssignPenalty(PlayerMovement player)
     {
-        currentPenaityIndex = Random.Range(0, penalties.Count());
+        Random rnd = new Random();
+        currentPenaityIndex = rnd.Next(0, penalties.Count());
         player.currentPenalty = penalties[currentPenaityIndex];
-        DisplayQuestion();
+        DisplayPenalty();
         ExecutePenalty(player);
-
     }
     void ExecutePenalty(PlayerMovement player)
     {
@@ -98,7 +98,7 @@ public class PenaltyManager : NetworkBehaviour
                 player.loseTurn = false;
                 if (player.playerPostion != player.currentPenalty.playerLastLocation)
                 {
-                    player.steps = (player.currentPenalty.playerLastLocation = player.playerPostion);
+                    player.steps = (player.currentPenalty.playerLastLocation - player.playerPostion);
                 }
                 if (player.playerScore != player.currentPenalty.playerLastScore)
                 {
@@ -109,8 +109,9 @@ public class PenaltyManager : NetworkBehaviour
                 break;
             case Penalty.PenaltyType.StayPut:
                 break;
-        }
 
+        }
+        player = null;
     }
     void Delay()
     {

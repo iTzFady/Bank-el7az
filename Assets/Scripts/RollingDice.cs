@@ -8,17 +8,14 @@ public class RollingDice : NetworkBehaviour
     [SyncVar] private float forceX, forceY, forceZ;
     [SyncVar] public int num;
     [SyncVar] public bool isRolling;
-    NetworkIdentity networkIdentity;
-    NetworkConnectionToClient connection;
     private void Awake()
     {
         Initialize();
     }
-
-    [Command(requiresAuthority = false)]
     public void RollDice()
     {
-        Debug.Log("TextDice");
+        if (!isServer) return; // Only the server can roll the dice
+
         isRolling = true;
         diceBody.isKinematic = false;
         forceX = Random.Range(0, maxRandomForceValue);
@@ -44,5 +41,19 @@ public class RollingDice : NetworkBehaviour
     {
         num = 0;
         Invoke("ResetPosition", 1f);
+    }
+    [ClientRpc]
+    public void RpcRollDice()
+    {
+        if (isServer)
+        {
+            RollDice();
+        }
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdRequestRollDice()
+    {
+        RpcRollDice(); // Request the server to roll the dice
     }
 }

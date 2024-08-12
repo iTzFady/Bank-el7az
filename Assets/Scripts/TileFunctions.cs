@@ -1,7 +1,7 @@
 using Mirror;
 using UnityEngine;
 
-public class TileFunctions : MonoBehaviour
+public class TileFunctions : NetworkBehaviour
 {
     enum tileStations
     {
@@ -18,6 +18,7 @@ public class TileFunctions : MonoBehaviour
     //CameraController cameraController;
     CameraManager cameraManager;
     QuestionManager questionManager;
+    PenaltyManager penaltyManager;
 
 
     private void Awake()
@@ -25,6 +26,7 @@ public class TileFunctions : MonoBehaviour
         //cameraController = FindObjectOfType<CameraController>();
         questionManager = FindObjectOfType<QuestionManager>();
         cameraManager = FindObjectOfType<CameraManager>();
+        penaltyManager = FindObjectOfType<PenaltyManager>();
     }
     public void question()
     {
@@ -37,7 +39,6 @@ public class TileFunctions : MonoBehaviour
     public void penalty()
     {
         GameManager.instance.isPlayerBusy = true;
-        questionManager.DisplayQuestion();
         cameraManager.switchToCamera((int)CameraManager.CameraType.Penalty, null);
         Invoke("PenaltyCardAnimation", 1f);
     }
@@ -66,17 +67,21 @@ public class TileFunctions : MonoBehaviour
         return GameManager.instance.players[GameManager.instance.currentPlayerindex].steps += position;
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         int currentPlayerIndex = GameManager.instance.currentPlayerindex;
         PlayerMovement player = other.GetComponent<PlayerMovement>();
         if (!player.isMoving)
         {
+            Debug.Log(player.gameObject.name);
             if (TilesStations != tileStations.Start)
             {
                 if (!player.activatedTiles.Contains(int.Parse(gameObject.name)))
                 {
-                    player.activatedTiles.Add(int.Parse(gameObject.name));
+                    if (player.GetComponent<NetworkIdentity>().isOwned)
+                    {
+                        player.activatedTiles.Add(int.Parse(gameObject.name));
+                    }
                     switch (TilesStations)
                     {
                         case tileStations.Questions:
@@ -95,12 +100,14 @@ public class TileFunctions : MonoBehaviour
                             Debug.LogError("position change" + other.gameObject.name);
                             break;
                         case tileStations.Penalty:
-                            PenaltyManager.instance.AssignPenalty(player);
+                            //PenaltyManager.instance.AssignPenalty(player);
+                            penaltyManager.AssignPenalty(player);
                             penalty();
                             break;
                         default:
                             break;
                     }
+                    player = null;
                 }
                 else
                 {

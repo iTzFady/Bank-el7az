@@ -9,13 +9,11 @@ public class GameManager : NetworkBehaviour
     public static GameManager instance;
     RollingDice dice;
     CameraManager cameraManager;
-    PlayerMovement[] objects;
     public List<PlayerMovement> players;
-    public int currentPlayerindex = 0;
+    [SyncVar] public int currentPlayerindex = 0;
     [SyncVar] public bool isSomeonePlaying;
     [SyncVar] public bool isPlayerBusy;
     [SyncVar] public bool isPlayerQuestioned;
-    private MyNetworkManager myNetworkServer;
     private float time;
     private int frameCount;
     private float pollingTime = 1f;
@@ -24,7 +22,6 @@ public class GameManager : NetworkBehaviour
     {
         dice = FindObjectOfType<RollingDice>();
         cameraManager = FindObjectOfType<CameraManager>();
-        myNetworkServer = (MyNetworkManager)NetworkManager.singleton;
         if (instance == null)
         {
             instance = this;
@@ -36,44 +33,46 @@ public class GameManager : NetworkBehaviour
     }
     private void Start()
     {
-        //Application.targetFrameRate = Screen.currentResolution.refreshRate;
+        Application.targetFrameRate = Screen.currentResolution.refreshRate;
         //AddPlayers();
         //StartPlayerTurn();
     }
     // Update is called once per frame
     void Update()
     {
-
         if (dice != null)
         {
             if (Input.GetMouseButtonDown(0) && !dice.isRolling && !GameManager.instance.isSomeonePlaying && !GameManager.instance.isPlayerBusy && !GameManager.instance.isPlayerQuestioned)
             {
-                cmdRollingDice();
+                dice.CmdRequestRollDice();
             }
         }
-        if (!GameManager.instance.isSomeonePlaying && dice.num > 0)
+        if (players.Count > 0)
         {
-            cameraManager.switchToCamera((int)(CameraManager.CameraType.Player), players[currentPlayerindex]);
-            players[currentPlayerindex].steps = dice.num;
-            dice.ResetDice();
-            players[currentPlayerindex].StartMoving();
-            StartCoroutine(EndPlayerTurn());
-        }
-        if (!GameManager.instance.isSomeonePlaying && players[currentPlayerindex].steps < 0)
-        {
-            cameraManager.switchToCamera((int)(CameraManager.CameraType.Player), players[currentPlayerindex]);
-            players[currentPlayerindex].StartMoving();
-        }
-        if (!GameManager.instance.isPlayerBusy && !GameManager.instance.isPlayerQuestioned && !GameManager.instance.isSomeonePlaying && (cameraManager.currentCameraIndex != (int)CameraManager.CameraType.Dice))
-        {
-            cameraManager.switchToCamera((int)CameraManager.CameraType.Dice, null);
+            if (!GameManager.instance.isSomeonePlaying && dice.num > 0)
+            {
+                cameraManager.switchToCamera((int)(CameraManager.CameraType.Player), players[currentPlayerindex]);
+                players[currentPlayerindex].steps = dice.num;
+                dice.ResetDice();
+                players[currentPlayerindex].StartMoving();
+                StartCoroutine(EndPlayerTurn());
+            }
+            if (!GameManager.instance.isSomeonePlaying && players[currentPlayerindex].steps < 0)
+            {
+                cameraManager.switchToCamera((int)(CameraManager.CameraType.Player), players[currentPlayerindex]);
+                players[currentPlayerindex].StartMoving();
+            }
+            if (!GameManager.instance.isPlayerBusy && !GameManager.instance.isPlayerQuestioned && !GameManager.instance.isSomeonePlaying && (cameraManager.currentCameraIndex != (int)CameraManager.CameraType.Dice))
+            {
+                cameraManager.switchToCamera((int)CameraManager.CameraType.Dice, null);
+            }
         }
         // FramePerSecond();
     }
     public void AddPlayers(PlayerMovement currentPlayer)
     {
         //players.Clear();
-        objects = FindObjectsOfType<PlayerMovement>();
+        //objects = FindObjectsOfType<PlayerMovement>();
         // foreach (PlayerMovement obj in objects)
         // {
         //     if (obj.tag == "Player")
@@ -93,12 +92,17 @@ public class GameManager : NetworkBehaviour
         currentPlayerindex = (currentPlayerindex + 1) % players.Count;
         StartPlayerTurn();
     }
-    [Command(requiresAuthority = false)]
+    [Command]
     void cmdRollingDice()
     {
         cameraManager.switchToCamera((int)CameraManager.CameraType.Dice, null);
         dice.RollDice();
     }
+    /*[Command]
+    void CmdChangeOwnerShip(NetworkConnectionToClient connection, NetworkIdentity item)
+    {
+        item.AssignClientAuthority(connection);
+    }*/
     public void FramePerSecond()
     {
         time += Time.deltaTime;

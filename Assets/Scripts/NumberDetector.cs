@@ -1,3 +1,4 @@
+using Mirror;
 using UnityEngine;
 
 public class NumberDetector : MonoBehaviour
@@ -15,7 +16,7 @@ public class NumberDetector : MonoBehaviour
         {
             if (rollingDice.GetComponent<Rigidbody>().velocity == Vector3.zero)
             {
-                if (!playerMovement.isMoving)
+                if (!GameManager.instance.players[GameManager.instance.currentPlayerindex].isMoving)
                 {
                     rollingDice.num = int.Parse(other.name);
                 }
