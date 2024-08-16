@@ -1,8 +1,7 @@
 using UnityEngine;
 using Cinemachine;
-using Mirror;
 
-public class CameraManager : NetworkBehaviour
+public class CameraManager : MonoBehaviour
 {
     public int currentCameraIndex = 0;
     public CinemachineVirtualCamera[] virtualCameras;

@@ -20,19 +20,20 @@ public class MyNetworkManager : NetworkManager
     }
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
-        int point = conn.connectionId % spawnPoints.Count;
-        //Choose a spawn point
-        Transform startPoint = spawnPoints[point];
-        spawnPoints.Remove(spawnPoints[point]);
-        // Instantiate the player at the chosen spawn point
-        GameObject player = Instantiate(playerPrefab, startPoint.position, startPoint.rotation);
-        player.name = $"{playerPrefab.name} [connId={conn.connectionId}]";
-        //Add the player to the network
-        NetworkServer.AddPlayerForConnection(conn, player);
-        //Add Player to Actual Queue
-        GameManager.instance.AddPlayers(player.GetComponent<PlayerMovement>());
-        //Changing player to it's connection id
-        player.name = $"{playerPrefab.name} [connId={conn.connectionId}]";
+
+            int point = conn.connectionId % spawnPoints.Count;
+            //Choose a spawn point
+            Transform startPoint = spawnPoints[point];
+            spawnPoints.Remove(spawnPoints[point]);
+            // Instantiate the player at the chosen spawn point
+            GameObject player = Instantiate(playerPrefab, startPoint.position, startPoint.rotation);
+            //Changing player to it's connection id
+            player.name = $"{playerPrefab.name} [connId={conn.connectionId}]";
+            //Add the player to the network
+            NetworkServer.AddPlayerForConnection(conn, player);
+            //Add Player to Actual Queue
+            GameManager.instance.AddPlayers(player.GetComponent<PlayerMovement>());
+        
     }
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {

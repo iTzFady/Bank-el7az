@@ -9,7 +9,7 @@ public class GameManager : NetworkBehaviour
     public static GameManager instance;
     RollingDice dice;
     CameraManager cameraManager;
-    public List<PlayerMovement> players;
+    public SyncList<PlayerMovement> players = new SyncList<PlayerMovement>();
     [SyncVar] public int currentPlayerindex = 0;
     [SyncVar] public bool isSomeonePlaying;
     [SyncVar] public bool isPlayerBusy;
@@ -34,6 +34,7 @@ public class GameManager : NetworkBehaviour
     private void Start()
     {
         Application.targetFrameRate = Screen.currentResolution.refreshRate;
+        CmdChangeOwnerShip(players[0].GetComponent<NetworkIdentity>().connectionToClient, dice.GetComponent<NetworkIdentity>());
         //AddPlayers();
         //StartPlayerTurn();
     }
@@ -67,20 +68,14 @@ public class GameManager : NetworkBehaviour
                 cameraManager.switchToCamera((int)CameraManager.CameraType.Dice, null);
             }
         }
-        // FramePerSecond();
+        FramePerSecond();
     }
     public void AddPlayers(PlayerMovement currentPlayer)
     {
-        //players.Clear();
-        //objects = FindObjectsOfType<PlayerMovement>();
-        // foreach (PlayerMovement obj in objects)
-        // {
-        //     if (obj.tag == "Player")
-        //     {
-        //         players.Add(obj);
-        //     }
-        // }
-        players.Add(currentPlayer);
+        if (currentPlayer != null)
+        {
+            players.Add(currentPlayer);
+        }
     }
     void StartPlayerTurn()
     {
@@ -90,19 +85,19 @@ public class GameManager : NetworkBehaviour
     {
         yield return new WaitUntil(() => !players[currentPlayerindex].isMoving && !isPlayerBusy);
         currentPlayerindex = (currentPlayerindex + 1) % players.Count;
+        CmdChangeOwnerShip(players[currentPlayerindex].GetComponent<NetworkIdentity>().connectionToClient , dice.GetComponent<NetworkIdentity>());
         StartPlayerTurn();
     }
     [Command]
-    void cmdRollingDice()
-    {
-        cameraManager.switchToCamera((int)CameraManager.CameraType.Dice, null);
-        dice.RollDice();
-    }
-    /*[Command]
     void CmdChangeOwnerShip(NetworkConnectionToClient connection, NetworkIdentity item)
     {
+        if (!item.isOwned)
+        {
+            item.RemoveClientAuthority();
+        }
         item.AssignClientAuthority(connection);
-    }*/
+        Debug.Log("Authority Changed");
+    }
     public void FramePerSecond()
     {
         time += Time.deltaTime;

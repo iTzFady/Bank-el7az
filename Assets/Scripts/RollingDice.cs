@@ -40,7 +40,10 @@ public class RollingDice : NetworkBehaviour
     public void ResetDice()
     {
         num = 0;
-        Invoke("ResetPosition", 1f);
+        ResetPosition();
+        Debug.Log("1");
+        //Invoke("ResetPosition", 1f);
+        Debug.Log("2");
     }
     [ClientRpc]
     public void RpcRollDice()
@@ -51,7 +54,7 @@ public class RollingDice : NetworkBehaviour
         }
     }
 
-    [Command(requiresAuthority = false)]
+    [Command]
     public void CmdRequestRollDice()
     {
         RpcRollDice(); // Request the server to roll the dice

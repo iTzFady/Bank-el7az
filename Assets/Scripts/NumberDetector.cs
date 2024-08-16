@@ -1,14 +1,13 @@
 using Mirror;
 using UnityEngine;
 
-public class NumberDetector : MonoBehaviour
+
+public class NumberDetector : NetworkBehaviour
 {
     RollingDice rollingDice;
-    PlayerMovement playerMovement;
     private void Awake()
     {
         rollingDice = FindObjectOfType<RollingDice>();
-        playerMovement = FindObjectOfType<PlayerMovement>();
     }
     private void OnTriggerStay(Collider other)
     {

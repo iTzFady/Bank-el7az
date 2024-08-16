@@ -42,7 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 653399533054009886}
   - component: {fileID: 653399533054009856}
-  - component: {fileID: 653399533054009887}
+  - component: {fileID: 3247469997623129693}
   m_Layer: 0
   m_Name: Question
   m_TagString: Untagged
@@ -112,7 +112,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &653399533054009887
+--- !u!114 &3247469997623129693
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 653399533054009885}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95f437e10ab3f2c44bf012dea583cbd1, type: 3}
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -132,7 +132,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: How many days in the year
+  m_text: Testing Question
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
@@ -204,11 +204,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 653399533054009856}
   m_maskType: 0
-  preserveNumbers: 0
-  farsi: 1
-  originalText: How many days in the year
-  fixTags: 1
-  forceFix: 0
 --- !u!1 &653399533492993936
 GameObject:
   m_ObjectHideFlags: 0

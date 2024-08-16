@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Marker : MonoBehaviour 
+public class Marker : MonoBehaviour
 {
     public Transform markerLocation;
     public bool isUnavaliable;

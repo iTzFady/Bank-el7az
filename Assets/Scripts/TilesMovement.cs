@@ -5,10 +5,10 @@ public class TilesMovement : MonoBehaviour
 {
     Transform[] tiles;
     public List<Transform> tilesList = new List<Transform>();
-
     private void Start()
     {
         FillList();
+
     }
     void FillList()
     {

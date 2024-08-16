@@ -21,9 +21,8 @@ public class TileFunctions : NetworkBehaviour
     PenaltyManager penaltyManager;
 
 
-    private void Awake()
+    private void Start()
     {
-        //cameraController = FindObjectOfType<CameraController>();
         questionManager = FindObjectOfType<QuestionManager>();
         cameraManager = FindObjectOfType<CameraManager>();
         penaltyManager = FindObjectOfType<PenaltyManager>();
@@ -73,7 +72,6 @@ public class TileFunctions : NetworkBehaviour
         PlayerMovement player = other.GetComponent<PlayerMovement>();
         if (!player.isMoving)
         {
-            Debug.Log(player.gameObject.name);
             if (TilesStations != tileStations.Start)
             {
                 if (!player.activatedTiles.Contains(int.Parse(gameObject.name)))

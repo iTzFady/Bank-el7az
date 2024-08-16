@@ -1,7 +1,6 @@
 using UnityEngine;
 using TMPro;
 using System.Linq;
-using RTLTMPro;
 using Mirror;
 public class QuestionManager : NetworkBehaviour
 {
@@ -31,14 +30,6 @@ public class QuestionManager : NetworkBehaviour
             Destroy(gameObject);
         }
     }
-    void Start()
-    {
-        foreach (var choice in choiceTexts)
-        {
-            var collider = choice.gameObject.GetComponentInParent<BoxCollider>();
-            var textRenderer = choice.GetComponent<Renderer>();
-        }
-    }
     private void Update()
     {
         if (Input.touchCount > 0 && GameManager.instance.isPlayerQuestioned)
@@ -52,9 +43,15 @@ public class QuestionManager : NetworkBehaviour
                 {
                     for (int i = 0; i < choiceTexts.Length; i++)
                     {
-                        if (hit.collider.gameObject.GetComponentInChildren<RTLTextMeshPro3D>().text == choiceTexts[i].text)
+                        if (hit.collider.gameObject != null)
                         {
-                            CheckAnswer(i);
+                            if (hit.collider.gameObject.GetComponentInChildren<TextMeshPro>().text == choiceTexts[i].text)
+                            {
+                                CheckAnswer(i);
+                            }
+                        }
+                        else {
+                            return;
                         }
                     }
                     cameraManager.switchToCamera((int)CameraManager.CameraType.Dice, null);

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 65246659327541809}
   - component: {fileID: 65246659327541810}
-  - component: {fileID: 65246659327541811}
+  - component: {fileID: 6043326626868606796}
   - component: {fileID: 65246659327541808}
   m_Layer: 0
   m_Name: Answer
@@ -81,7 +81,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &65246659327541811
+--- !u!114 &6043326626868606796
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -90,7 +90,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 65246659327541814}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95f437e10ab3f2c44bf012dea583cbd1, type: 3}
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -128,8 +128,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 1
-  m_fontSizeBase: 1
+  m_fontSize: 3
+  m_fontSizeBase: 3
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -173,11 +173,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 65246659327541810}
   m_maskType: 0
-  preserveNumbers: 0
-  farsi: 1
-  originalText: Testing Choice
-  fixTags: 1
-  forceFix: 0
 --- !u!65 &65246659327541808
 BoxCollider:
   m_ObjectHideFlags: 0
