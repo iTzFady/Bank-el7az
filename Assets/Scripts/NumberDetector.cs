@@ -5,7 +5,7 @@ using UnityEngine;
 public class NumberDetector : NetworkBehaviour
 {
     RollingDice rollingDice;
-    private void Awake()
+    private void Start()
     {
         rollingDice = FindObjectOfType<RollingDice>();
     }

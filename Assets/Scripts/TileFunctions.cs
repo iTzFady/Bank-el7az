@@ -58,12 +58,12 @@ public class TileFunctions : NetworkBehaviour
 
     public int scoreChange(int score)
     {
-        return GameManager.instance.players[GameManager.instance.currentPlayerindex].playerScore += score;
+        return GameManager.instance.players[GameManager.instance.currentPlayerindex].GetComponent<PlayerMovement>().playerScore += score;
     }
 
     public int positionChange(int position)
     {
-        return GameManager.instance.players[GameManager.instance.currentPlayerindex].steps += position;
+        return GameManager.instance.players[GameManager.instance.currentPlayerindex].GetComponent<PlayerMovement>().steps += position;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -90,11 +90,11 @@ public class TileFunctions : NetworkBehaviour
                             Debug.LogError("skip turn" + other.gameObject.name);
                             break;
                         case tileStations.ScoreChange:
-                            scoreChange(GameManager.instance.players[currentPlayerIndex].playerScore);
+                            scoreChange(GameManager.instance.players[currentPlayerIndex].GetComponent<PlayerMovement>().playerScore);
                             Debug.LogError("score change" + other.gameObject.name);
                             break;
                         case tileStations.PositionChange:
-                            positionChange(GameManager.instance.players[currentPlayerIndex].steps);
+                            positionChange(GameManager.instance.players[currentPlayerIndex].GetComponent<PlayerMovement>().steps);
                             Debug.LogError("position change" + other.gameObject.name);
                             break;
                         case tileStations.Penalty:

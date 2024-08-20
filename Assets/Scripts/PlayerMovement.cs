@@ -15,7 +15,7 @@ public class PlayerMovement : NetworkBehaviour
     public Penalty currentPenalty;
     public SyncHashSet<int> activatedTiles = new SyncHashSet<int>();
 
-    private void Awake()
+    private void Start()
     {
         boxCollider = GetComponent<BoxCollider>();
         currentTile = FindObjectOfType<TilesMovement>();

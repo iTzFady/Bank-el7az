@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,7 +10,7 @@ public class GameManager : NetworkBehaviour
     public static GameManager instance;
     RollingDice dice;
     CameraManager cameraManager;
-    public SyncList<PlayerMovement> players = new SyncList<PlayerMovement>();
+    public List<PlayerMovement> players = new List<PlayerMovement>();
     [SyncVar] public int currentPlayerindex = 0;
     [SyncVar] public bool isSomeonePlaying;
     [SyncVar] public bool isPlayerBusy;
@@ -34,9 +35,7 @@ public class GameManager : NetworkBehaviour
     private void Start()
     {
         Application.targetFrameRate = Screen.currentResolution.refreshRate;
-        CmdChangeOwnerShip(players[0].GetComponent<NetworkIdentity>().connectionToClient, dice.GetComponent<NetworkIdentity>());
-        //AddPlayers();
-        //StartPlayerTurn();
+        RetrievePlayersList();
     }
     // Update is called once per frame
     void Update()
@@ -72,10 +71,14 @@ public class GameManager : NetworkBehaviour
     }
     public void AddPlayers(PlayerMovement currentPlayer)
     {
-        if (currentPlayer != null)
+        if (currentPlayer != null && isServer)
         {
             players.Add(currentPlayer);
         }
+    }
+    public void RetrievePlayersList()
+    {
+        players = FindObjectsOfType<PlayerMovement>().OrderBy(o => o.netId).ToList();
     }
     void StartPlayerTurn()
     {
@@ -85,18 +88,7 @@ public class GameManager : NetworkBehaviour
     {
         yield return new WaitUntil(() => !players[currentPlayerindex].isMoving && !isPlayerBusy);
         currentPlayerindex = (currentPlayerindex + 1) % players.Count;
-        CmdChangeOwnerShip(players[currentPlayerindex].GetComponent<NetworkIdentity>().connectionToClient , dice.GetComponent<NetworkIdentity>());
         StartPlayerTurn();
-    }
-    [Command]
-    void CmdChangeOwnerShip(NetworkConnectionToClient connection, NetworkIdentity item)
-    {
-        if (!item.isOwned)
-        {
-            item.RemoveClientAuthority();
-        }
-        item.AssignClientAuthority(connection);
-        Debug.Log("Authority Changed");
     }
     public void FramePerSecond()
     {

@@ -1,5 +1,6 @@
 using UnityEngine;
 using Mirror;
+
 [RequireComponent(typeof(Rigidbody))]
 public class RollingDice : NetworkBehaviour
 {
@@ -11,6 +12,9 @@ public class RollingDice : NetworkBehaviour
     private void Awake()
     {
         Initialize();
+    }
+    private void Start()
+    {
     }
     public void RollDice()
     {
@@ -41,9 +45,6 @@ public class RollingDice : NetworkBehaviour
     {
         num = 0;
         ResetPosition();
-        Debug.Log("1");
-        //Invoke("ResetPosition", 1f);
-        Debug.Log("2");
     }
     [ClientRpc]
     public void RpcRollDice()
@@ -54,9 +55,37 @@ public class RollingDice : NetworkBehaviour
         }
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     public void CmdRequestRollDice()
     {
         RpcRollDice(); // Request the server to roll the dice
     }
+    [Command(requiresAuthority = false)]
+    public void CmdRequestOwnershipChange(NetworkConnectionToClient newOwner)
+    {
+        if (!isServer) return;
+
+        ServerChangeOwnership(newOwner);
+
+        // Inform all clients about the ownership change
+        RpcNotifyOwnershipChange(newOwner.connectionId);
+    }
+
+    [Server]
+    private void ServerChangeOwnership(NetworkConnectionToClient newOwner)
+    {
+        NetworkIdentity netIdentity = GetComponent<NetworkIdentity>();
+        netIdentity.RemoveClientAuthority();
+        Debug.Log(newOwner);
+        // Assign authority to the new owner
+        netIdentity.AssignClientAuthority(newOwner);
+    }
+
+    [ClientRpc]
+    private void RpcNotifyOwnershipChange(int newOwnerId)
+    {
+        // Log or handle the new owner on each client
+        Debug.Log($"New owner assigned with connection ID: {newOwnerId}");
+    }
+
 }

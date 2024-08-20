@@ -1047,6 +1047,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 183784448}
+  - component: {fileID: 183784449}
   m_Layer: 0
   m_Name: Spawnpoint (3)
   m_TagString: SpawnPoints
@@ -1067,8 +1068,20 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 25
+  m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &183784449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 183784447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41f84591ce72545258ea98cb7518d8b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &186383522
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2150,7 +2163,7 @@ PrefabInstance:
     - target: {fileID: 4013199375128251916, guid: 5d77d86d82ad9174992b63e1d14f7565,
         type: 3}
       propertyPath: TilesStations
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4789858052940146714, guid: 5d77d86d82ad9174992b63e1d14f7565,
         type: 3}
@@ -2454,7 +2467,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &383617838
 Transform:
@@ -2939,6 +2952,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 480825102}
+  - component: {fileID: 480825103}
   m_Layer: 0
   m_Name: Spawnpoint (4)
   m_TagString: SpawnPoints
@@ -2959,8 +2973,20 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 26
+  m_RootOrder: 25
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &480825103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 480825101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41f84591ce72545258ea98cb7518d8b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &488538308
 GameObject:
   m_ObjectHideFlags: 0
@@ -5145,6 +5171,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 699928553}
+  - component: {fileID: 699928554}
   m_Layer: 0
   m_Name: Spawnpoint (2)
   m_TagString: SpawnPoints
@@ -5165,8 +5192,20 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 24
+  m_RootOrder: 23
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &699928554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 699928552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41f84591ce72545258ea98cb7518d8b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &701240022
 GameObject:
   m_ObjectHideFlags: 0
@@ -5285,7 +5324,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -5318,7 +5357,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 2
+  m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -6649,7 +6688,7 @@ PrefabInstance:
     - target: {fileID: 4013199375128251916, guid: 5d77d86d82ad9174992b63e1d14f7565,
         type: 3}
       propertyPath: TilesStations
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4789858052940146714, guid: 5d77d86d82ad9174992b63e1d14f7565,
         type: 3}
@@ -6824,7 +6863,7 @@ PrefabInstance:
     - target: {fileID: 4013199375128251916, guid: 5d77d86d82ad9174992b63e1d14f7565,
         type: 3}
       propertyPath: TilesStations
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4789858052940146714, guid: 5d77d86d82ad9174992b63e1d14f7565,
         type: 3}
@@ -11354,6 +11393,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1592600935}
+  - component: {fileID: 1592600936}
   m_Layer: 0
   m_Name: Spawnpoint (1)
   m_TagString: SpawnPoints
@@ -11374,8 +11414,20 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 23
+  m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1592600936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1592600934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41f84591ce72545258ea98cb7518d8b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1604490871
 GameObject:
   m_ObjectHideFlags: 0
@@ -11459,156 +11511,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1604490871}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1611174725
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1611174728}
-  - component: {fileID: 1611174731}
-  - component: {fileID: 1611174730}
-  - component: {fileID: 1611174732}
-  - component: {fileID: 1611174733}
-  m_Layer: 0
-  m_Name: NetworkManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1611174728
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1611174725}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 22
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1611174730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1611174725}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6442dc8070ceb41f094e44de0bf87274, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  offsetX: 0
-  offsetY: 0
---- !u!114 &1611174731
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1611174725}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d206ec000e71b1344ac50dd12e71a6e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
-  runInBackground: 1
-  headlessStartMode: 1
-  editorAutoStart: 0
-  sendRate: 60
-  autoStartServerBuild: 0
-  autoConnectClientBuild: 0
-  offlineScene: 
-  onlineScene: 
-  transport: {fileID: 1611174732}
-  networkAddress: localhost
-  maxConnections: 4
-  disconnectInactiveConnections: 0
-  disconnectInactiveTimeout: 60
-  authenticator: {fileID: 0}
-  playerPrefab: {fileID: 7325579112593129672, guid: 66be735d419a416428fc6e96503243e2,
-    type: 3}
-  autoCreatePlayer: 1
-  playerSpawnMethod: 1
-  spawnPrefabs: []
-  exceptionsDisconnect: 1
-  snapshotSettings:
-    bufferTimeMultiplier: 2
-    bufferLimit: 32
-    catchupNegativeThreshold: -1
-    catchupPositiveThreshold: 1
-    catchupSpeed: 0.019999999552965164
-    slowdownSpeed: 0.03999999910593033
-    driftEmaDuration: 1
-    dynamicAdjustment: 1
-    dynamicAdjustmentTolerance: 1
-    deliveryTimeEmaDuration: 2
-  evaluationMethod: 0
-  evaluationInterval: 3
-  timeInterpolationGui: 0
-  Dice: {fileID: 1772447747}
-  spawnPoints: []
---- !u!114 &1611174732
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1611174725}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7424c1070fad4ba2a7a96b02fbeb4bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  port: 7777
-  NoDelay: 1
-  SendTimeout: 5000
-  ReceiveTimeout: 30000
-  serverMaxMessageSize: 16384
-  serverMaxReceivesPerTick: 10000
-  serverSendQueueLimitPerConnection: 10000
-  serverReceiveQueueLimitPerConnection: 10000
-  clientMaxMessageSize: 16384
-  clientMaxReceivesPerTick: 1000
-  clientSendQueueLimit: 10000
-  clientReceiveQueueLimit: 10000
---- !u!114 &1611174733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1611174725}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d7da4e566d24ea7b0e12178d934b648, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clientIntervalReceivedPackets: 0
-  clientIntervalReceivedBytes: 0
-  clientIntervalSentPackets: 0
-  clientIntervalSentBytes: 0
-  clientReceivedPacketsPerSecond: 0
-  clientReceivedBytesPerSecond: 0
-  clientSentPacketsPerSecond: 0
-  clientSentBytesPerSecond: 0
-  serverIntervalReceivedPackets: 0
-  serverIntervalReceivedBytes: 0
-  serverIntervalSentPackets: 0
-  serverIntervalSentBytes: 0
-  serverReceivedPacketsPerSecond: 0
-  serverReceivedBytesPerSecond: 0
-  serverSentPacketsPerSecond: 0
-  serverSentBytesPerSecond: 0
 --- !u!1001 &1613854862
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13761,7 +13663,7 @@ PrefabInstance:
     - target: {fileID: 782058582187995643, guid: 5d77d86d82ad9174992b63e1d14f7565,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1217570033638089824, guid: 5d77d86d82ad9174992b63e1d14f7565,
         type: 3}
@@ -13786,7 +13688,7 @@ PrefabInstance:
     - target: {fileID: 1344480751877720129, guid: 5d77d86d82ad9174992b63e1d14f7565,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1344480751877720129, guid: 5d77d86d82ad9174992b63e1d14f7565,
         type: 3}
@@ -15460,7 +15362,7 @@ PrefabInstance:
     - target: {fileID: 4013199375128251916, guid: 5d77d86d82ad9174992b63e1d14f7565,
         type: 3}
       propertyPath: TilesStations
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4789858052940146714, guid: 5d77d86d82ad9174992b63e1d14f7565,
         type: 3}
